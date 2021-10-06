@@ -1,2 +1,1 @@
-# ChocolateyPackages
-My chocolatey packages (a work in progress)
+My chocolatey packages (a work in progress).
