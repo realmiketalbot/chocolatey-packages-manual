@@ -18,7 +18,7 @@ $packageArgs = @{
   PackageVersion= '5.1.015'
   MaintainerName= 'Mike Talbot'
 
-  silentArgs   = '/s /v"/qn"' 
+  silentArgs   = '/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP-'
   validExitCodes= @(0, 3010, 1641)
 }
 
