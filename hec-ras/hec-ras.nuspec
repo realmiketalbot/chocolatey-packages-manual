@@ -11,7 +11,7 @@
     <projectUrl>https://www.hec.usace.army.mil/software/hec-ras/</projectUrl>
     <docsUrl>https://www.hec.usace.army.mil/confluence/rasdocs</docsUrl>
     <bugTrackerUrl>https://www.hec.usace.army.mil/software/hec-ras/bug_report.aspx</bugTrackerUrl>
-    <iconUrl>https://raw.githubusercontent.com/realmiketalbot/ChocolateyPackages/main/hec-ras/hec-ras-logo.jpeg</iconUrl>
+    <iconUrl>https://raw.githubusercontent.com/realmiketalbot/ChocolateyPackages/main/hec-ras/hec-ras-logo.png</iconUrl>
     <releaseNotes>https://www.hec.usace.army.mil/confluence/rasdocs/rasrn</releaseNotes>
     <copyright>2021 USACE</copyright>
     <tags>hec-ras hec ras hydrologic hydraulic modeling army corps</tags>
