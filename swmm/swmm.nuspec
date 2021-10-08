@@ -12,7 +12,6 @@
     <docsUrl>https://www.epa.gov/water-research/storm-water-management-model-swmm-version-51-users-manual</docsUrl>
     <iconUrl>https://raw.githubusercontent.com/realmiketalbot/ChocolateyPackages/main/swmm/swmm-logo.png</iconUrl>
     <releaseNotes>https://www.openswmm.org/SWMM51015</releaseNotes>
-    <mailingListUrl>mailto:listserv@listserv.uoguelph.ca</mailingListUrl>
     <copyright>2020 USEPA</copyright>
     <tags>epa swmm epaswmm stormwater storm water management model modeling hydrologic hydraulic culvert</tags>
     <summary>Storm Water Management Model (SWMM)</summary>
