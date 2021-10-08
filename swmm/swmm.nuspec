@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>swmm</id>
+    <version>5.1.015</version>
+    <packageSourceUrl>https://github.com/realmiketalbot/ChocolateyPackages/tree/main/swmm</packageSourceUrl>
+    <owners>Mike Talbot</owners>
+    
+    <title>swmm (Install)</title>
+    <authors>US Environmental Protection Agency</authors>
+    <projectUrl>https://www.epa.gov/water-research/storm-water-management-model-swmm</projectUrl>
+    <docsUrl>https://www.epa.gov/water-research/storm-water-management-model-swmm-version-51-users-manual</docsUrl>
+    <iconUrl>https://raw.githubusercontent.com/realmiketalbot/ChocolateyPackages/main/swmm/swmm-logo.png</iconUrl>
+    <releaseNotes>https://www.openswmm.org/SWMM51015</releaseNotes>
+    <mailingListUrl>listserv@listserv.uoguelph.ca</mailingListUrl>
+    <copyright>2020 USEPA</copyright>
+    <tags>epa swmm epaswmm stormwater storm water management model modeling hydrologic hydraulic culvert</tags>
+    <summary>Storm Water Management Model (SWMM)</summary>
+    <description>EPA's Storm Water Management Model (SWMM) is used throughout the world for planning, analysis, and design related to stormwater runoff, combined and sanitary sewers, and other drainage systems. It can be used to evaluate gray infrastructure stormwater control strategies, such as pipes and storm drains, and is a useful tool for creating cost-effective green/gray hybrid stormwater control solutions. SWMM was developed to help support local, state, and national stormwater management objectives to reduce runoff through infiltration and retention, and help to reduce discharges that cause impairment of waterbodies.</description>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>
