@@ -9,9 +9,12 @@
     <title>hec-ras (Install)</title>
     <authors>US Army Corps of Engineers</authors>
     <projectUrl>https://www.hec.usace.army.mil/software/hec-ras/</projectUrl>
-    <iconUrl>https://www.hec.usace.army.mil/images/usace-logo-color.svg</iconUrl>
-    <copyright>2021 SonicWall</copyright>
-    <tags>netextender net extender sonicwall sonic wall vpn</tags>
+    <docsUrl>https://www.hec.usace.army.mil/confluence/rasdocs</docsUrl>
+    <bugTrackerUrl>https://www.hec.usace.army.mil/software/hec-ras/bug_report.aspx</bugTrackerUrl>
+    <iconUrl>https://raw.githubusercontent.com/realmiketalbot/ChocolateyPackages/main/hec-ras/usace-logo-color.png</iconUrl>
+    <releaseNotes>https://github.com/realmiketalbot/ChocolateyPackages/blob/main/hec-ras/CHANGELOG.md</releaseNotes>
+    <copyright>2021 USACE</copyright>
+    <tags>hec-ras hec ras hydrologic hydraulic modeling army corps</tags>
     <summary>Hydrologic Engineering Center's (CEIWR-HEC) River Analysis System (HEC-RAS)</summary>
     <description>This software allows the user to perform one-dimensional steady flow, one and two-dimensional unsteady flow calculations, sediment transport/mobile bed computations, and water temperature/water quality modeling.</description>
   </metadata>
