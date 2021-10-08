@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>hec-ras</id>
+    <version>6.1</version>
+    <packageSourceUrl>https://github.com/realmiketalbot/ChocolateyPackages/tree/main/hec-ras</packageSourceUrl>
+    <owners>Mike Talbot</owners>
+    
+    <title>hec-ras (Install)</title>
+    <authors>US Army Corps of Engineers</authors>
+    <projectUrl>https://www.hec.usace.army.mil/software/hec-ras/</projectUrl>
+    <iconUrl>https://www.hec.usace.army.mil/images/usace-logo-color.svg</iconUrl>
+    <copyright>2021 SonicWall</copyright>
+    <tags>netextender net extender sonicwall sonic wall vpn</tags>
+    <summary>Hydrologic Engineering Center's (CEIWR-HEC) River Analysis System (HEC-RAS)</summary>
+    <description>This software allows the user to perform one-dimensional steady flow, one and two-dimensional unsteady flow calculations, sediment transport/mobile bed computations, and water temperature/water quality modeling.</description>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>
