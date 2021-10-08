@@ -2,8 +2,8 @@
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
   softwareName  = 'hec-ras*' 
-  fileType      = 'EXE'
-  silentArgs   = '/s /v"/qn"' 
+  fileType      = 'MSI'
+  silentArgs   = '/quiet' 
   validExitCodes= @(0, 3010, 1605, 1614, 1641)
 }
 
