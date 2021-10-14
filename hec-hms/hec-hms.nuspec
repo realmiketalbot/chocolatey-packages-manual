@@ -6,7 +6,7 @@
     <packageSourceUrl>https://github.com/realmiketalbot/ChocolateyPackages/tree/main/hec-hms</packageSourceUrl>
     <owners>Mike Talbot</owners>
     
-    <title>hec-hms (Install)</title>
+    <title>HEC-HMS</title>
     <authors>US Army Corps of Engineers</authors>
     <projectUrl>https://www.hec.usace.army.mil/software/hec-hms/</projectUrl>
     <docsUrl>https://www.hec.usace.army.mil/software/hec-hms/documentation.aspx</docsUrl>

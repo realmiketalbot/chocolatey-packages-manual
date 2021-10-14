@@ -6,7 +6,7 @@
     <packageSourceUrl>https://github.com/realmiketalbot/ChocolateyPackages/tree/main/hec-ras</packageSourceUrl>
     <owners>Mike Talbot</owners>
     
-    <title>hec-ras (Install)</title>
+    <title>HEC-RAS</title>
     <authors>US Army Corps of Engineers</authors>
     <projectUrl>https://www.hec.usace.army.mil/software/hec-ras/</projectUrl>
     <docsUrl>https://www.hec.usace.army.mil/confluence/rasdocs</docsUrl>

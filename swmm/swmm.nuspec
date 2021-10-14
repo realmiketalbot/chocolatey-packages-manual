@@ -6,7 +6,7 @@
     <packageSourceUrl>https://github.com/realmiketalbot/ChocolateyPackages/tree/main/swmm</packageSourceUrl>
     <owners>Mike Talbot</owners>
     
-    <title>swmm (Install)</title>
+    <title>SWMM</title>
     <authors>US Environmental Protection Agency</authors>
     <projectUrl>https://www.epa.gov/water-research/storm-water-management-model-swmm</projectUrl>
     <docsUrl>https://www.epa.gov/water-research/storm-water-management-model-swmm-version-51-users-manual</docsUrl>
