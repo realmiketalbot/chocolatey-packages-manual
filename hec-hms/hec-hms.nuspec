@@ -11,7 +11,7 @@
     <projectUrl>https://www.hec.usace.army.mil/software/hec-hms/</projectUrl>
     <docsUrl>https://www.hec.usace.army.mil/software/hec-hms/documentation.aspx</docsUrl>
     <bugTrackerUrl>https://www.hec.usace.army.mil/software/hec-hms/bug_report.aspx</bugTrackerUrl>
-    <iconUrl>https://raw.githubusercontent.com/realmiketalbot/ChocolateyPackages/main/hec-hms/hec-hms-logo.png</iconUrl>
+    <iconUrl>https://cdn.jsdelivr.net/gh/realmiketalbot/ChocolateyPackages/hec-hms/hec-hms-logo.png</iconUrl>
     <releaseNotes>https://www.hec.usace.army.mil/confluence/hmsdocs/hmsum/4.8/release-notes/v-4-8-0-release-notes</releaseNotes>
     <copyright>2021 USACE</copyright>
     <tags>hec-hms hec hms watershed hydrologic hydraulic modeling army corps</tags>
