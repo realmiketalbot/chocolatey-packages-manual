@@ -6,7 +6,6 @@ $url        = 'https://github.com/HydrologicEngineeringCenter/hec-downloads/rele
 
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
-  unzipLocation = $toolsDir
   fileType      = 'exe'
   url           = $url
 
@@ -14,9 +13,6 @@ $packageArgs = @{
 
   checksum      = '6B131F8F59BEF5593394E2E18102C4C798A4FB80B0FEC984081403B640EBCC02'
   checksumType  = 'sha256'
-
-  PackageVersion= '6.1'
-  MaintainerName= 'Mike Talbot'
 
   silentArgs   = '/s /v"/qn"' 
   validExitCodes= @(0, 3010, 1641)

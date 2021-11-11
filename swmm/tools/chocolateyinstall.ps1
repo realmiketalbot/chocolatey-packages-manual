@@ -6,7 +6,6 @@ $url        = 'https://www.epa.gov/sites/default/files/2020-08/swmm51015_setup.e
 
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
-  unzipLocation = $toolsDir
   fileType      = 'exe'
   url           = $url
 
@@ -14,9 +13,6 @@ $packageArgs = @{
 
   checksum      = '69D89C75168A689ABCC9F754E2EF5E20BDA978BE4AA682DCC90A444A4A91835B'
   checksumType  = 'sha256'
-
-  PackageVersion= '5.1.015'
-  MaintainerName= 'Mike Talbot'
 
   silentArgs   = '/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP-'
   validExitCodes= @(0, 3010, 1641)
