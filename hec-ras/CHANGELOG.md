@@ -10,3 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Version 6.1 installer
+
+## [6.1] - 2021-03-17
+
+### Added
+
+- Version 6.2 installer
