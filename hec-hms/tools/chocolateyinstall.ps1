@@ -11,7 +11,7 @@ $packageArgs = @{
 
   softwareName  = 'hec-hms*'
 
-  checksum      = 'BA14BDC3684E963CFAA5694FE4EA4D09E6E439ABB36AB4DAE671F8AC70B7C4F1'
+  checksum      = 'DE8FFDC5383903B333142549529459C7B2D1AF39862AB3D5BC47CE73E71757AC'
   checksumType  = 'sha256'
 
   silentArgs   = '/s /v"/qn"' 
