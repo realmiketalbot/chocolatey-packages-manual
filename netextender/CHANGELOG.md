@@ -10,3 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Version 10.2.313 installer
+
+## [10.2.324] - 2022-08-12
+
+### Added
+
+- Version 10.2.324 installer
