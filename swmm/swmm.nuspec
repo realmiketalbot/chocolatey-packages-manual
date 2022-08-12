@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
     <id>swmm</id>
-    <version>5.2.0</version>
+    <version>5.2.1</version>
     <packageSourceUrl>https://github.com/realmiketalbot/ChocolateyPackages/tree/main/swmm</packageSourceUrl>
     <owners>Mike Talbot</owners>
     
@@ -11,7 +11,7 @@
     <projectUrl>https://www.epa.gov/water-research/storm-water-management-model-swmm</projectUrl>
     <docsUrl>https://www.epa.gov/system/files/documents/2022-02/storm-water-management-model-users-manual-version-5.2.pdf</docsUrl>
     <iconUrl>https://cdn.jsdelivr.net/gh/realmiketalbot/ChocolateyPackages/swmm/swmm-logo.png</iconUrl>
-    <releaseNotes>https://www.epa.gov/system/files/documents/2022-02/updatebug20220222_1.pdf</releaseNotes>
+    <releaseNotes>https://www.epa.gov/system/files/other-files/2022-08/epaswmm5_updates_0.txt</releaseNotes>
     <copyright>2022 USEPA</copyright>
     <tags>epa swmm epaswmm stormwater storm water management model modeling hydrologic hydraulic culvert</tags>
     <summary>Storm Water Management Model (SWMM)</summary>
