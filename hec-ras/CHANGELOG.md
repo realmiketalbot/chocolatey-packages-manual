@@ -11,8 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Version 6.1 installer
 
-## [6.1] - 2021-03-17
+## [6.2] - 2022-03-17
 
 ### Added
 
 - Version 6.2 installer
+
+## [6.3] - 2022-08-29
+
+### Added
+
+- Version 6.3 installer
