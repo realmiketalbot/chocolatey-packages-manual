@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>epanet</id>
+    <version>2.2</version>
+    <packageSourceUrl>https://github.com/realmiketalbot/ChocolateyPackages/tree/main/epanet</packageSourceUrl>
+    <owners>Mike Talbot</owners>
+    
+    <title>EPANET</title>
+    <authors>US Environmental Protection Agency</authors>
+    <projectUrl>https://www.epa.gov/water-research/epanet</projectUrl>
+    <docsUrl>https://epanet22.readthedocs.io/en/latest/</docsUrl>
+    <iconUrl>https://cdn.jsdelivr.net/gh/realmiketalbot/ChocolateyPackages/epanet/epanet-logo.png</iconUrl>
+    <releaseNotes>https://www.epa.gov/sites/default/files/2020-08/epanet2.2_updates_0.txt</releaseNotes>
+    <copyright>2020 USEPA</copyright>
+    <tags>epa epanet epaswmm stormwater water distribution model modeling drinking tower</tags>
+    <summary>EPANET</summary>
+    <description>EPANET is a software application used throughout the world to model water distribution systems. It was developed as a tool for understanding the movement and fate of drinking water constituents within distribution systems, and can be used for many different types of applications in distribution systems analysis. Today, engineers and consultants use EPANET to design and size new water infrastructure, retrofit existing aging infrastructure, optimize operations of tanks and pumps, reduce energy usage, investigate water quality problems, and prepare for emergencies. It can also be used to model contamination threats and evaluate resilience to security threats or natural disasters.</description>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>
