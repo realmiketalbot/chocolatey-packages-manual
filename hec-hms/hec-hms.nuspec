@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
     <id>hec-hms</id>
-    <version>4.9</version>
+    <version>4.10</version>
     <packageSourceUrl>https://github.com/realmiketalbot/ChocolateyPackages/tree/main/hec-hms</packageSourceUrl>
     <owners>Mike Talbot</owners>
     
@@ -12,7 +12,7 @@
     <docsUrl>https://www.hec.usace.army.mil/software/hec-hms/documentation.aspx</docsUrl>
     <bugTrackerUrl>https://www.hec.usace.army.mil/software/hec-hms/bug_report.aspx</bugTrackerUrl>
     <iconUrl>https://cdn.jsdelivr.net/gh/realmiketalbot/ChocolateyPackages/hec-hms/hec-hms-logo.png</iconUrl>
-    <releaseNotes>https://www.hec.usace.army.mil/confluence/hmsdocs/hmsum/4.9/release-notes/v-4-9-0-release-notes</releaseNotes>
+    <releaseNotes>https://www.hec.usace.army.mil/confluence/hmsdocs/hmsum/4.10/release-notes/v-4-10-0-release-notes</releaseNotes>
     <copyright>2022 USACE</copyright>
     <tags>hec-hms hec hms watershed hydrologic hydraulic modeling army corps</tags>
     <summary>Hydrologic Engineering Center's (CEIWR-HEC) Hydrologic Modeling System (HEC-HMS)</summary>

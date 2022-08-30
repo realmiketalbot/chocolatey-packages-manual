@@ -2,7 +2,7 @@
 $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 # Community Repo: Use official urls for non-redist binaries or redist where total package size is over 200MB
 # Internal/Organization: Download from internal location (internet sources are unreliable)
-$url        = 'https://github.com/HydrologicEngineeringCenter/hec-downloads/releases/download/1.0.22/HEC-HMS_49_Setup.exe' # download url, HTTPS preferred
+$url        = 'https://github.com/HydrologicEngineeringCenter/hec-downloads/releases/download/1.0.24/HEC-HMS_410_Setup.exe' # download url, HTTPS preferred
 
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
@@ -11,7 +11,7 @@ $packageArgs = @{
 
   softwareName  = 'hec-hms*'
 
-  checksum      = 'DE8FFDC5383903B333142549529459C7B2D1AF39862AB3D5BC47CE73E71757AC'
+  checksum      = 'BDB2FCB5CA1827B74BC322466946A8E0D54B3347C7F6A948639A6184449A041A'
   checksumType  = 'sha256'
 
   silentArgs   = '/s /v"/qn"' 
