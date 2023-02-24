@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>saga-gis</id>
+    <version>7.2.0</version>
+    <packageSourceUrl>https://github.com/realmiketalbot/ChocolateyPackages/tree/main/saga-gis</packageSourceUrl>
+    <owners>Mike Talbot</owners>
+    
+    <title>SAGA GIS</title>
+    <authors>SAGA User Group Association</authors>
+    <projectUrl>https://saga-gis.sourceforge.io/en/index.html</projectUrl>
+    <docsUrl>https://saga-gis.sourceforge.io/saga_tool_doc/7.2.0/index.html</docsUrl>
+    <bugTrackerUrl>https://sourceforge.net/p/saga-gis/bugs/</bugTrackerUrl>
+    <iconUrl>https://cdn.jsdelivr.net/gh/realmiketalbot/ChocolateyPackages/saga-gis/saga-logo.png</iconUrl>
+    <releaseNotes>https://www.hec.usace.army.mil/confluence/rasdocs/rasrn</releaseNotes>
+    <copyright>2019 SAGA User Group Association</copyright>
+    <licenseUrl>https://www.gnu.org/licenses/lgpl-3.0.html</licenseUrl>
+    <tags>saga gis scientific geoscientific analysis qgis</tags>
+    <summary>SAGA is the abbreviation for System for Automated Geoscientific Analyses</summary>
+    <description>
+      - SAGA is the abbreviation for System for Automated Geoscientific Analyses
+      - SAGA is a Geographic Information System (GIS) software
+      - SAGA has been designed for an easy and effective implementation of spatial algorithms
+      - SAGA offers a comprehensive, growing set of geoscientific methods
+      - SAGA provides an easily approachable user interface with many visualisation options
+      - SAGA runs under Windows and Linux operating systems
+      - SAGA is a Free Open Source Software (FOSS)
+    </description>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>
