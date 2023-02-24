@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
     <id>netextender</id>
-    <version>10.2.324</version>
+    <version>10.2.331</version>
     <packageSourceUrl>https://github.com/realmiketalbot/ChocolateyPackages/tree/main/netextender</packageSourceUrl>
     <owners>Mike Talbot</owners>
     
@@ -10,7 +10,7 @@
     <authors>SonicWall</authors>
     <projectUrl>https://www.sonicwall.com/products/remote-access/vpn-clients/</projectUrl>
     <iconUrl>https://d3ik27cqx8s5ub.cloudfront.net/media/uploads/2020/08/vpn-product.png</iconUrl>
-    <copyright>2021 SonicWall</copyright>
+    <copyright>2022 SonicWall</copyright>
     <tags>netextender net extender sonicwall sonic wall vpn</tags>
     <summary>SonicWall NetExtender</summary>
     <description>SonicWall’s SSL VPN NetExtender allows you to provide easy and secure access to Windows and Linux users. This transparent software enables remote users to securely connect and run any application on  the company network. Users can upload and download files, mount network drives, and access resources as if they were on the local network.</description>

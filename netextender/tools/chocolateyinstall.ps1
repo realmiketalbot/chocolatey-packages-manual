@@ -2,19 +2,19 @@
 $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 # Community Repo: Use official urls for non-redist binaries or redist where total package size is over 200MB
 # Internal/Organization: Download from internal location (internet sources are unreliable)
-$url        = 'https://software.sonicwall.com/NetExtender/NXSetupU-x64-10.2.324.exe' # download url, HTTPS preferred
+$url        = 'https://software.sonicwall.com/NetExtender/NetExtender-x64-10.2.331.MSI' # download url, HTTPS preferred
 
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
-  fileType      = 'exe'
+  fileType      = 'msi'
   url           = $url
 
   softwareName  = 'netextender*'
 
-  checksum      = '67D33EFE77A7DED4C09DF5A66458601FA210312BA9D65AEC5BA7E0FF2A46367F'
+  checksum      = 'DC701172990CC795C9BA6F50B7F1AA454160D570BF2756B65E312A4EDE4DCC34'
   checksumType  = 'sha256'
 
-  silentArgs   = '/s /v"/qn"' 
+  silentArgs   = '/norestart /qn' 
   validExitCodes= @(0, 3010, 1641)
 }
 
