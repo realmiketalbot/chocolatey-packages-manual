@@ -2,8 +2,8 @@
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
   softwareName  = 'saga-gis*' 
-  fileType      = 'MSI'
-  silentArgs   = '/quiet' 
+  fileType      = 'exe'
+  silentArgs   = '/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP-' 
   validExitCodes= @(0, 3010, 1605, 1614, 1641)
 }
 
@@ -13,7 +13,7 @@ if ($key.Count -eq 1) {
   $key | % {
     $packageArgs['file'] = "$($_.UninstallString)" 
 
-    if ($packageArgs['fileType'] -eq 'MSI') {
+    if ($packageArgs['fileType'] -eq 'EXE') {
       $packageArgs['silentArgs'] = "$($_.PSChildName) $($packageArgs['silentArgs'])"
 
       $packageArgs['file'] = ''

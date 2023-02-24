@@ -13,7 +13,7 @@ if ($key.Count -eq 1) {
   $key | % {
     $packageArgs['file'] = "$($_.UninstallString)" 
 
-    if ($packageArgs['fileType'] -eq 'MSI') {
+    if ($packageArgs['fileType'] -eq 'EXE') {
       $packageArgs['silentArgs'] = "$($_.PSChildName) $($packageArgs['silentArgs'])"
 
       $packageArgs['file'] = ''
