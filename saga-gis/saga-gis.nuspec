@@ -18,13 +18,13 @@
     <tags>saga gis scientific geoscientific analysis qgis</tags>
     <summary>SAGA is the abbreviation for System for Automated Geoscientific Analyses</summary>
     <description>
-      - SAGA is the abbreviation for System for Automated Geoscientific Analyses
-      - SAGA is a Geographic Information System (GIS) software
-      - SAGA has been designed for an easy and effective implementation of spatial algorithms
-      - SAGA offers a comprehensive, growing set of geoscientific methods
-      - SAGA provides an easily approachable user interface with many visualisation options
-      - SAGA runs under Windows and Linux operating systems
-      - SAGA is a Free Open Source Software (FOSS)
+      * SAGA is the abbreviation for System for Automated Geoscientific Analyses
+      * SAGA is a Geographic Information System (GIS) software
+      * SAGA has been designed for an easy and effective implementation of spatial algorithms
+      * SAGA offers a comprehensive, growing set of geoscientific methods
+      * SAGA provides an easily approachable user interface with many visualisation options
+      * SAGA runs under Windows and Linux operating systems
+      * SAGA is a Free Open Source Software (FOSS)
     </description>
   </metadata>
   <files>
