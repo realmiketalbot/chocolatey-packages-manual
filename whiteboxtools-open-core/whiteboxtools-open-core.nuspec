@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>whiteboxtools-open-core</id>
+    <version>2.2.0</version>
+    <packageSourceUrl>https://github.com/realmiketalbot/ChocolateyPackages/tree/main/whiteboxtools-open-core</packageSourceUrl>
+    <owners>Mike Talbot</owners>
+    
+    <authors>Whitebox Geospatial Inc.</authors>
+    <title>WhiteboxTools Open Core (WbTOC)</title>
+    <projectUrl>https://www.whiteboxgeo.com/geospatial-software/</projectUrl>
+    <docsUrl>https://www.whiteboxgeo.com/manual/wbt_book/preface.html</docsUrl>
+    <iconUrl>https://i0.wp.com/www.whiteboxgeo.com/wp-content/uploads/2021/04/cropped-Screen-Shot-2021-04-07-at-4.05.28-PM.png</iconUrl>
+    <releaseNotes>https://github.com/jblindsay/whitebox-tools/releases/tag/v2.2.0</releaseNotes>
+    <copyright>2022 Whitebox Geospatial Inc.</copyright>
+    <licenseUrl>https://opensource.org/license/mit/</licenseUrl>
+    <tags>whitebox tools open core dem gis vector raster geospatial</tags>
+    <summary>
+      WbTOC is the foundation of the Whitebox Platform, containing over 460 open-source tools for processing and analyzing geospatial data of all kinds. It is freely available and the source code is hosted on Github. It's a true powerhouse of geospatial analysis.
+    </summary>
+    <description>
+      WhiteboxTools is an advanced geospatial software package and a data analysis platform developed at the University of Guelph’s Geomorphometry and Hydrogeomatics Research Group (GHRG). The project began in January 2017 and quickly evolved in terms of its analytical capabilities. Some of WhiteboxTools features include:
+
+      * Contains more than 450 tools for processing various types of geospatial data
+      * Many tools operate in parallel, taking full advantage of your multi-core processor.
+      * Written in the safe and cross-platform systems programming language Rust and compiled to highly efficient native code. No virtual machine or interpreter required is needed to run WhiteboxTools.
+      * Small stand-alone application with no external dependencies, making installation as easy as downloading the small zip file and decompressing it.
+      * Simple yet powerful Python scripting interface that allows users to develop custom scripted workflows
+      * Embed WhiteboxTools functions into hetergeneous scripting environments along with ArcPy, GDAL, and other geoprocessing libraries.
+      * Serves as an analytical back-end for other GIS, remote sensing, and geospatial software (e.g. the QGIS Whitebox for Processing plugin). See more on the many front-ends developed for WhiteboxTools here.
+      * Permissive MIT open-source license allows for ready integration with other software.
+    </description>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>
