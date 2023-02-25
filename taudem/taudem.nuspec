@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>taudem</id>
+    <version>5.3.7</version>
+    <packageSourceUrl>https://github.com/realmiketalbot/ChocolateyPackages/tree/main/taudem</packageSourceUrl>
+    <owners>Mike Talbot</owners>
+    
+    <authors>David Tarboton Hydrology Research Group, Utah State University</authors>
+    <title>TauDEM Command Line Executibles</title>
+    <projectUrl>https://hydrology.usu.edu/taudem/taudem5/</projectUrl>
+    <docsUrl>https://hydrology.usu.edu/taudem/taudem5/documentation.html</docsUrl>
+    <iconUrl>https://www.un-spider.org/sites/default/files/styles/logo_for_datasources/public/taudem%20logo.jpg?itok=Ag1gXZtz</iconUrl>
+    <releaseNotes>https://hydrology.usu.edu/taudem/taudem5/updates.html</releaseNotes>
+    <copyright>2010-2015 David Tarboton, Utah State University</copyright>
+    <tags>taudem tau dem gis raster digital elevation model</tags>
+    <summary>TauDEM Command Line Executables for 32 or 64 bit Windows PC</summary>
+    <description>
+    TauDEM (Terrain Analysis Using Digital Elevation Models) is a suite of Digital Elevation Model (DEM) tools for the extraction and analysis of hydrologic information from topography as represented by a DEM. TauDEM provides the following capability:
+      * Development of hydrologically conditioned (pit removed) DEMs using the flooding approach
+      * Calculates flow paths (directions) and slopes
+      * Calculates contributing area using single and multiple flow direction methods
+      * Multiple methods for the delineation of stream networks including topographic form-based methods sensitive to spatially variable drainage density
+      * Objective methods for determination of the channel network delineation threshold based on stream drops
+      * Delineation of watersheds and subwatersheds draining to each stream segment and association between watershed and segment attributes for setting up hydrologic models
+      
+    See the project home page for more information.
+
+    </description>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>

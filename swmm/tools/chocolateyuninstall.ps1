@@ -3,7 +3,7 @@ $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
   softwareName  = 'swmm*' 
   fileType      = 'EXE'
-  silentArgs   = '/s /v"/qn"' 
+  silentArgs   = '/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP-' 
   validExitCodes= @(0, 3010, 1605, 1614, 1641)
 }
 
