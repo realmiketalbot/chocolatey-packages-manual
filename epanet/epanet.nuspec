@@ -10,7 +10,7 @@
     <authors>US Environmental Protection Agency</authors>
     <projectUrl>https://www.epa.gov/water-research/epanet</projectUrl>
     <docsUrl>https://epanet22.readthedocs.io/en/latest/</docsUrl>
-    <iconUrl>https://cdn.jsdelivr.net/gh/realmiketalbot/ChocolateyPackages/epanet/epanet-logo.png</iconUrl>
+    <iconUrl>https://cdn.jsdelivr.net/gh/realmiketalbot/ChocolateyPackages@latest/epanet/epanet-logo.png</iconUrl>
     <releaseNotes>https://www.epa.gov/sites/default/files/2020-08/epanet2.2_updates_0.txt</releaseNotes>
     <copyright>2020 USEPA</copyright>
     <tags>epa epanet epaswmm stormwater water distribution model modeling drinking tower</tags>
