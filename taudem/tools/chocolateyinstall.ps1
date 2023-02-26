@@ -1,7 +1,7 @@
-﻿$ErrorActionPreference = 'Stop'; # stop on all errors
+﻿$ErrorActionPreference = 'Stop';
 $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
-$url      = 'https://github.com/dtarb/TauDEM/releases/download/v5.3.7/TauDEM537exeWin32.zip' # download url for 32-bit
-$url64      = 'https://github.com/dtarb/TauDEM/releases/download/v5.3.7/TauDEM537exeWin64.zip' # download url for 64-bit
+$url      = 'https://github.com/dtarb/TauDEM/releases/download/v5.3.7/TauDEM537exeWin32.zip'
+$url64      = 'https://github.com/dtarb/TauDEM/releases/download/v5.3.7/TauDEM537exeWin64.zip'
 
 $packageArgs = @{
   packageName   = $Env:ChocolateyPackageName

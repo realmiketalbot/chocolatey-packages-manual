@@ -1,8 +1,6 @@
-﻿$ErrorActionPreference = 'Stop'; # stop on all errors
+﻿$ErrorActionPreference = 'Stop';
 $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
-# Community Repo: Use official urls for non-redist binaries or redist where total package size is over 200MB
-# Internal/Organization: Download from internal location (internet sources are unreliable)
-$url        = 'https://github.com/HydrologicEngineeringCenter/hec-downloads/releases/download/1.0.26/HEC-RAS_631_Setup.exe' # download url, HTTPS preferred
+$url        = 'https://github.com/HydrologicEngineeringCenter/hec-downloads/releases/download/1.0.26/HEC-RAS_631_Setup.exe'
 
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName

@@ -10,7 +10,7 @@
     <title>WhiteboxTools Open Core (WbTOC)</title>
     <projectUrl>https://www.whiteboxgeo.com/geospatial-software/</projectUrl>
     <docsUrl>https://www.whiteboxgeo.com/manual/wbt_book/preface.html</docsUrl>
-    <iconUrl>https://i0.wp.com/www.whiteboxgeo.com/wp-content/uploads/2021/04/cropped-Screen-Shot-2021-04-07-at-4.05.28-PM.png</iconUrl>
+    <iconUrl>https://cdn.jsdelivr.net/gh/realmiketalbot/ChocolateyPackages/whiteboxtools-open-core/whiteboxtools-logo.png</iconUrl>
     <releaseNotes>https://github.com/jblindsay/whitebox-tools/releases/tag/v2.2.0</releaseNotes>
     <copyright>2022 Whitebox Geospatial Inc.</copyright>
     <licenseUrl>https://opensource.org/license/mit/</licenseUrl>

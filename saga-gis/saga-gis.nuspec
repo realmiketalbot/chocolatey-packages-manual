@@ -11,7 +11,7 @@
     <projectUrl>https://saga-gis.sourceforge.io/en/index.html</projectUrl>
     <docsUrl>https://saga-gis.sourceforge.io/saga_tool_doc/7.2.0/index.html</docsUrl>
     <bugTrackerUrl>https://sourceforge.net/p/saga-gis/bugs/</bugTrackerUrl>
-    <iconUrl>https://saga-gis.sourceforge.io/_images/logo_saga_big.png</iconUrl>
+    <iconUrl>https://cdn.jsdelivr.net/gh/realmiketalbot/ChocolateyPackages/saga-gis/saga-logo.png</iconUrl>
     <releaseNotes>https://www.hec.usace.army.mil/confluence/rasdocs/rasrn</releaseNotes>
     <copyright>2019 SAGA User Group Association</copyright>
     <licenseUrl>https://www.gnu.org/licenses/lgpl-3.0.html</licenseUrl>

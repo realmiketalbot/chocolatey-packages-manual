@@ -10,7 +10,7 @@
     <title>TauDEM Command Line Executibles</title>
     <projectUrl>https://hydrology.usu.edu/taudem/taudem5/</projectUrl>
     <docsUrl>https://hydrology.usu.edu/taudem/taudem5/documentation.html</docsUrl>
-    <iconUrl>https://www.un-spider.org/sites/default/files/styles/logo_for_datasources/public/taudem%20logo.jpg?itok=Ag1gXZtz</iconUrl>
+    <iconUrl>https://cdn.jsdelivr.net/gh/realmiketalbot/ChocolateyPackages/taudem/taudem-logo.png</iconUrl>
     <releaseNotes>https://hydrology.usu.edu/taudem/taudem5/updates.html</releaseNotes>
     <copyright>2010-2015 David Tarboton, Utah State University</copyright>
     <tags>taudem tau dem gis raster digital elevation model</tags>

@@ -1,4 +1,4 @@
-﻿$ErrorActionPreference = 'Stop'; # stop on all errors
+﻿$ErrorActionPreference = 'Stop';
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
   softwareName  = 'saga-gis*' 
@@ -13,7 +13,7 @@ if ($key.Count -eq 1) {
   $key | % {
     $packageArgs['file'] = "$($_.UninstallString)" 
 
-    if ($packageArgs['fileType'] -eq 'EXE') {
+    if ($packageArgs['fileType'] -eq 'exe') {
       $packageArgs['silentArgs'] = "$($_.PSChildName) $($packageArgs['silentArgs'])"
 
       $packageArgs['file'] = ''

@@ -1,8 +1,8 @@
-﻿$ErrorActionPreference = 'Stop'; # stop on all errors
+﻿$ErrorActionPreference = 'Stop';
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
   softwareName  = 'hec-ras*' 
-  fileType      = 'EXE'
+  fileType      = 'exe'
   silentArgs   = '/s /v"/qn"' 
   validExitCodes= @(0, 3010, 1605, 1614, 1641)
 }
@@ -13,7 +13,7 @@ if ($key.Count -eq 1) {
   $key | % {
     $packageArgs['file'] = "$($_.UninstallString)" 
 
-    if ($packageArgs['fileType'] -eq 'EXE') {
+    if ($packageArgs['fileType'] -eq 'exe') {
       $packageArgs['silentArgs'] = "$($_.PSChildName) $($packageArgs['silentArgs'])"
 
       $packageArgs['file'] = ''

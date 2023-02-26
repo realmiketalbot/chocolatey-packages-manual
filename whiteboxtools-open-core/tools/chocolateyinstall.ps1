@@ -1,4 +1,4 @@
-﻿$ErrorActionPreference = 'Stop'; # stop on all errors
+﻿$ErrorActionPreference = 'Stop';
 $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 $url64      = 'https://www.whiteboxgeo.com/WBT_Windows/WhiteboxTools_win_amd64.zip'
 

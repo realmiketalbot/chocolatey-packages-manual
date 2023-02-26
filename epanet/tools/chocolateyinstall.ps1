@@ -1,8 +1,6 @@
-﻿$ErrorActionPreference = 'Stop'; # stop on all errors
+﻿$ErrorActionPreference = 'Stop';
 $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
-# Community Repo: Use official urls for non-redist binaries or redist where total package size is over 200MB
-# Internal/Organization: Download from internal location (internet sources are unreliable)
-$url        = 'https://github.com/USEPA/EPANET2.2/releases/download/2.2.0/epanet2.2_setup.exe' # download url, HTTPS preferred
+$url        = 'https://github.com/USEPA/EPANET2.2/releases/download/2.2.0/epanet2.2_setup.exe'
 
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName

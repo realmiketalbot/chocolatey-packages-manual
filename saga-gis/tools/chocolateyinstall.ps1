@@ -1,8 +1,6 @@
-﻿$ErrorActionPreference = 'Stop'; # stop on all errors
+﻿$ErrorActionPreference = 'Stop';
 $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
-# Community Repo: Use official urls for non-redist binaries or redist where total package size is over 200MB
-# Internal/Organization: Download from internal location (internet sources are unreliable)
-$url        = 'https://master.dl.sourceforge.net/project/saga-gis/SAGA%20-%207/SAGA%20-%207.2.0/saga-7.2.0_x64_setup.exe' # download url, HTTPS preferred
+$url        = 'https://master.dl.sourceforge.net/project/saga-gis/SAGA%20-%207/SAGA%20-%207.2.0/saga-7.2.0_x64_setup.exe'
 
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName

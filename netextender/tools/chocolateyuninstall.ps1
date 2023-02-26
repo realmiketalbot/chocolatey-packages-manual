@@ -2,7 +2,7 @@
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
   softwareName  = 'netextender*' 
-  fileType      = 'EXE'
+  fileType      = 'MSI'
   silentArgs   = '/norestart /qn' 
   validExitCodes= @(0, 3010, 1605, 1614, 1641)
 }
