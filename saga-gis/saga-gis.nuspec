@@ -2,18 +2,18 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
     <id>saga-gis</id>
-    <version>7.2.0</version>
+    <version>7.8.2</version>
     <packageSourceUrl>https://github.com/realmiketalbot/ChocolateyPackages/tree/main/saga-gis</packageSourceUrl>
     <owners>Mike Talbot</owners>
     
     <title>SAGA GIS</title>
     <authors>SAGA User Group Association</authors>
     <projectUrl>https://saga-gis.sourceforge.io/en/index.html</projectUrl>
-    <docsUrl>https://saga-gis.sourceforge.io/saga_tool_doc/7.2.0/index.html</docsUrl>
+    <docsUrl>https://saga-gis.sourceforge.io/saga_tool_doc/7.8.2/index.html</docsUrl>
     <bugTrackerUrl>https://sourceforge.net/p/saga-gis/bugs/</bugTrackerUrl>
     <iconUrl>https://cdn.jsdelivr.net/gh/realmiketalbot/ChocolateyPackages@latest/saga-gis/saga-logo.png</iconUrl>
     <releaseNotes>https://www.hec.usace.army.mil/confluence/rasdocs/rasrn</releaseNotes>
-    <copyright>2019 SAGA User Group Association</copyright>
+    <copyright>2020 SAGA User Group Association</copyright>
     <licenseUrl>https://www.gnu.org/licenses/lgpl-3.0.html</licenseUrl>
     <tags>saga gis scientific geoscientific analysis qgis</tags>
     <summary>SAGA is the abbreviation for System for Automated Geoscientific Analyses</summary>
