@@ -10,8 +10,9 @@
     <authors>US Environmental Protection Agency</authors>
     <projectUrl>https://www.epa.gov/water-research/storm-water-management-model-swmm</projectUrl>
     <docsUrl>https://www.epa.gov/system/files/documents/2022-02/storm-water-management-model-users-manual-version-5.2.pdf</docsUrl>
+    <bugTrackerUrl>https://github.com/USEPA/Stormwater-Management-Model/issues</bugTrackerUrl>
     <iconUrl>https://cdn.jsdelivr.net/gh/realmiketalbot/ChocolateyPackages@latest/swmm/swmm-logo.png</iconUrl>
-    <releaseNotes>https://www.epa.gov/system/files/other-files/2022-08/epaswmm5_updates_0.txt</releaseNotes>
+    <releaseNotes>https://www.epa.gov/system/files/documents/2022-12/epaswmm5_updates.txt</releaseNotes>
     <copyright>2022 USEPA</copyright>
     <tags>epa swmm epaswmm stormwater storm water management model modeling hydrologic hydraulic culvert</tags>
     <summary>Storm Water Management Model (SWMM)</summary>
