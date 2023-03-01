@@ -11,12 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Version 7.2.0 installer
 
-## [7.8.2] - 2023-03-01
-
-### Added
-
-- Version 7.8.2 installer
-
 ## [7.9.1] - 2023-03-01
 
 ### Added
