@@ -1,18 +1,20 @@
-﻿$ErrorActionPreference = 'Stop'; # stop on all errors
+﻿$ErrorActionPreference = 'Stop';
 $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
-# Community Repo: Use official urls for non-redist binaries or redist where total package size is over 200MB
-# Internal/Organization: Download from internal location (internet sources are unreliable)
-$url        = 'https://www.epa.gov/system/files/other-files/2022-12/swmm522%28x64%29_setup.exe' # download url, HTTPS preferred
+$url        = 'https://www.epa.gov/system/files/other-files/2023-03/swmm523%28x86%29_setup.exe'
+$url64bit      = 'https://www.epa.gov/system/files/other-files/2023-03/swmm523%28x64%29_setup.exe'
 
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
   fileType      = 'exe'
-  url           = $url
-
   softwareName  = 'swmm*'
 
-  checksum      = '92E8380DB3B10B67707A9769BFFC486F67795030729683FECA25A9DD2205BC44'
+  url           = $url
+  checksum      = 'D4278EF5454E6FA2C9672DD363B2A1F8070F9DC78A0F548697D72C9EDEC79DE3'
   checksumType  = 'sha256'
+
+  url64bit      = $url64bit
+  checksum64    = '37749E5C16730273F40402750F258BA4C361B6B312636D575769D8D5E90EFE35'
+  checksumType64= 'sha256'
 
   silentArgs   = '/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP-'
   validExitCodes= @(0, 3010, 1641)
