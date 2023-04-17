@@ -6,7 +6,7 @@ $packageArgs = @{
   packageName   = $Env:ChocolateyPackageName
   Url64         = $url64
   UnzipLocation = $toolsDir
-  checksum64    = '303F9CDB53AE03A8DB9E912544CA50C27A49D5CBFE01B2AB57BC2D44F7478998'
+  checksum64    = '6F208CDC1F5B718717E5EC6C0E461DD96FC2C405E6F79297813784DFB4EEE7BA'
   checksumType64= 'sha256'
 }
 
