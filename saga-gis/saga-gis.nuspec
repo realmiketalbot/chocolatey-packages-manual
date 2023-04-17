@@ -12,7 +12,7 @@
     <docsUrl>https://saga-gis.sourceforge.io/saga_tool_doc/7.2.0/index.html</docsUrl>
     <bugTrackerUrl>https://sourceforge.net/p/saga-gis/bugs/</bugTrackerUrl>
     <iconUrl>https://cdn.jsdelivr.net/gh/realmiketalbot/ChocolateyPackages@latest/saga-gis/saga-logo.png</iconUrl>
-    <releaseNotes>https://www.hec.usace.army.mil/confluence/rasdocs/rasrn</releaseNotes>
+    <releaseNotes>https://sourceforge.net/projects/saga-gis/files/SAGA%20-%207/SAGA%20-%207.2.0/</releaseNotes>
     <copyright>2019 SAGA User Group Association</copyright>
     <licenseUrl>https://www.gnu.org/licenses/lgpl-3.0.html</licenseUrl>
     <tags>saga gis scientific geoscientific analysis qgis</tags>

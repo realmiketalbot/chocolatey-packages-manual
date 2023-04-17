@@ -13,6 +13,7 @@
     <iconUrl>https://cdn.jsdelivr.net/gh/realmiketalbot/ChocolateyPackages@latest/taudem/taudem-logo.png</iconUrl>
     <releaseNotes>https://hydrology.usu.edu/taudem/taudem5/updates.html</releaseNotes>
     <copyright>2010-2015 David Tarboton, Utah State University</copyright>
+    <licenseUrl>https://hydrology.usu.edu/taudem/taudem5/license.html</licenseUrl>
     <tags>taudem tau dem gis raster digital elevation model</tags>
     <summary>TauDEM Command Line Executables for 32 or 64 bit Windows PC</summary>
     <description>
