@@ -28,3 +28,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Version 6.3.1 installer
+
+## [6.4] - 2023-06-15
+
+### Added
+
+- Version 6.4 installer
