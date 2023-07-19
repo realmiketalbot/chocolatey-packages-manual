@@ -14,7 +14,20 @@ $packageArgs = @{
   checksum      = '2663dee4be9d346751d42bb1465b5d0138bcc99805790be0cb6f8f01574c1309'
   checksumType  = 'sha256'
 
-  silentArgs   = '/S /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP-'
+  # silentArgs = '/s' # from ussf, but did not work
+  # silentArgs = '/S' # did not work
+  # silentArgs = '/q' # did not work
+  # silentArgs = '/qn' # did not work
+  # silentArgs = '/Q' # did not work
+  # silentArgs = '/quiet' # did not work
+  # silentArgs = '/silent' # did not work
+  # silentArgs   = '/SILENT' # did not work
+  # silentArgs = '/verysilent'
+  # silentArgs = '/VERYSILENT' # did not work
+  # silentArgs   = '/s /v"/qn"' # did not work 
+  # silentArgs   = '/norestart /qn' # did not work 
+  # silentArgs = '/verysilent /norestart '
+  # silentArgs   = '/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP-' # did not work
   validExitCodes= @(0, 3010, 1641)
 }
 
