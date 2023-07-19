@@ -25,6 +25,7 @@ $packageArgs = @{
   # silentArgs = '/verysilent'
   # silentArgs = '/VERYSILENT' # did not work
   # silentArgs   = '/s /v"/qn"' # did not work 
+  # silentArgs = '/S /V" /qn' # did not work
   # silentArgs   = '/norestart /qn' # did not work 
   # silentArgs = '/verysilent /norestart '
   # silentArgs   = '/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP-' # did not work
