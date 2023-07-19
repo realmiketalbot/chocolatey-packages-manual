@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
     <id>hec-hms</id>
-    <version>4.10</version>
+    <version>4.11</version>
     <packageSourceUrl>https://github.com/realmiketalbot/ChocolateyPackages/tree/main/hec-hms</packageSourceUrl>
     <owners>Mike Talbot</owners>
     
@@ -12,8 +12,8 @@
     <docsUrl>https://www.hec.usace.army.mil/software/hec-hms/documentation.aspx</docsUrl>
     <bugTrackerUrl>https://www.hec.usace.army.mil/software/hec-hms/bug_report.aspx</bugTrackerUrl>
     <iconUrl>https://cdn.jsdelivr.net/gh/realmiketalbot/ChocolateyPackages@latest/hec-hms/hec-hms-logo.png</iconUrl>
-    <releaseNotes>https://www.hec.usace.army.mil/confluence/hmsdocs/hmsum/4.10/release-notes/v-4-10-0-release-notes</releaseNotes>
-    <copyright>2022 USACE</copyright>
+    <releaseNotes>https://www.hec.usace.army.mil/confluence/hmsdocs/hmsum/4.11/release-notes/v4-11-0-release-notes</releaseNotes>
+    <copyright>2023 USACE</copyright>
     <tags>hec-hms hec hms watershed hydrologic hydraulic modeling army corps</tags>
     <summary>Hydrologic Engineering Center's (CEIWR-HEC) Hydrologic Modeling System (HEC-HMS)</summary>
     <description>HEC-HMS is designed to simulate the complete hydrologic processes of dendritic watershed systems. The software includes many traditional hydrologic analysis procedures such as event infiltration, unit hydrographs, and hydrologic routing. HEC-HMS also includes procedures necessary for continuous simulation including evapo-transpiration, snowmelt, and soil moisture accounting. Advanced capabilities are also provided for gridded runoff simulation using the linear quasi-distributed runoff transform (ModClark). Supplemental analysis tools are provided for model optimization, forecasting streamflow, depth-area reduction, assessing model uncertainty, erosion and sediment transport, and water quality.</description>
