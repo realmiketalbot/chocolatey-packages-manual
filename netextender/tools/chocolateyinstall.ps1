@@ -1,18 +1,22 @@
 ﻿$ErrorActionPreference = 'Stop'; # stop on all errors
 $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
-# Community Repo: Use official urls for non-redist binaries or redist where total package size is over 200MB
-# Internal/Organization: Download from internal location (internet sources are unreliable)
-$url        = 'https://software.sonicwall.com/NetExtender/NetExtender-x64-10.2.331.MSI' # download url, HTTPS preferred
+
+$url        = 'https://software.sonicwall.com/NetExtender/NetExtender-x86-10.2.337.msi'
+$url64bit      = 'https://software.sonicwall.com/NetExtender/NetExtender-x64-10.2.337.msi'
 
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
   fileType      = 'msi'
-  url           = $url
-
   softwareName  = 'netextender*'
 
-  checksum      = 'DC701172990CC795C9BA6F50B7F1AA454160D570BF2756B65E312A4EDE4DCC34'
+  url           = $url
+  checksum      = '1C4F7A1EED85B27A2031E5A9774F7E3E3A5FC35BBB6EA3E7CC0B8A77D8495D25'
   checksumType  = 'sha256'
+
+  url64bit      = $url64bit
+  checksum64    = '83F29BF25E429CE35E3814320409703AEAC624EC1A283FB9144ACD46B3C53700'
+  checksumType64= 'sha256'
+
 
   silentArgs   = '/norestart /qn' 
   validExitCodes= @(0, 3010, 1641)
