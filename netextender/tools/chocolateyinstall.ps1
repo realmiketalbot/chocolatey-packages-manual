@@ -1,8 +1,8 @@
 ﻿$ErrorActionPreference = 'Stop'; # stop on all errors
 $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 
-$url        = 'https://software.sonicwall.com/NetExtender/NetExtender-x86-10.2.337.msi'
-$url64bit      = 'https://software.sonicwall.com/NetExtender/NetExtender-x64-10.2.337.msi'
+$url        = 'https://software.sonicwall.com/NetExtender/NetExtender-x86-10.2.338.msi'
+$url64bit      = 'https://software.sonicwall.com/NetExtender/NetExtender-x64-10.2.338.msi'
 
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
@@ -10,11 +10,11 @@ $packageArgs = @{
   softwareName  = 'netextender*'
 
   url           = $url
-  checksum      = '1C4F7A1EED85B27A2031E5A9774F7E3E3A5FC35BBB6EA3E7CC0B8A77D8495D25'
+  checksum      = '3408569548990D7AF36D9C248FC0F27805D7B7A62F193B4658FFA91700993BDE'
   checksumType  = 'sha256'
 
   url64bit      = $url64bit
-  checksum64    = '83F29BF25E429CE35E3814320409703AEAC624EC1A283FB9144ACD46B3C53700'
+  checksum64    = 'CC1FADA4F9573900195505ECE05C013B875B062A7C9AA5D901F67B3DC1392B23'
   checksumType64= 'sha256'
 
 

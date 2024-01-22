@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
     <id>netextender</id>
-    <version>10.2.337</version>
+    <version>10.2.338</version>
     <packageSourceUrl>https://github.com/realmiketalbot/ChocolateyPackages/tree/main/netextender</packageSourceUrl>
     <owners>Mike Talbot</owners>
     
@@ -11,7 +11,7 @@
     <projectUrl>https://www.sonicwall.com/products/remote-access/vpn-clients/</projectUrl>
     <iconUrl>https://cdn.jsdelivr.net/gh/realmiketalbot/ChocolateyPackages@latest/netextender/netextender-logo.png</iconUrl>
     <releaseNotes>https://www.sonicwall.com/techdocs/pdf/netextender-release_notes.pdf</releaseNotes>
-    <copyright>2023 SonicWall Inc.</copyright>
+    <copyright>2024 SonicWall Inc.</copyright>
     <licenseUrl>http://help.sonicwall.com/help/sw/eng/8112/8/0/0/content/Appendix_EULA%20Warranty.30.4.html</licenseUrl>
     <tags>netextender net extender sonicwall sonic wall vpn</tags>
     <summary>SonicWall NetExtender</summary>
