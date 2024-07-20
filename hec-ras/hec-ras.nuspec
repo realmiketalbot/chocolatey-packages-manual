@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
     <id>hec-ras</id>
-    <version>6.4.1</version>
+    <version>6.5</version>
     <packageSourceUrl>https://github.com/realmiketalbot/ChocolateyPackages/tree/main/hec-ras</packageSourceUrl>
     <owners>Mike Talbot</owners>
     
@@ -12,8 +12,8 @@
     <docsUrl>https://www.hec.usace.army.mil/confluence/rasdocs</docsUrl>
     <bugTrackerUrl>https://www.hec.usace.army.mil/software/hec-ras/bug_report.aspx</bugTrackerUrl>
     <iconUrl>https://cdn.jsdelivr.net/gh/realmiketalbot/ChocolateyPackages@latest/hec-ras/hec-ras-logo.png</iconUrl>
-    <releaseNotes>https://www.hec.usace.army.mil/confluence/rasdocs/rasrn</releaseNotes>
-    <copyright>2023 USACE</copyright>
+    <releaseNotes>https://www.hec.usace.army.mil/confluence/rasdocs/rasrn/latest</releaseNotes>
+    <copyright>2024 USACE</copyright>
     <tags>hec-ras hec ras hydrologic hydraulic modeling army corps</tags>
     <summary>Hydrologic Engineering Center's (CEIWR-HEC) River Analysis System (HEC-RAS)</summary>
     <description>HEC-RAS allows the user to perform one-dimensional steady flow, one and two-dimensional unsteady flow calculations, sediment transport/mobile bed computations, and water temperature/water quality modeling.</description>

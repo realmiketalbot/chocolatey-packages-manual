@@ -40,3 +40,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Version 6.4.1 installer
+
+## [6.5] - 2024-07-20
+
+### Added
+
+- Version 6.5 installer

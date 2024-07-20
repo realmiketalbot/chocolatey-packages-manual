@@ -1,6 +1,6 @@
 ﻿$ErrorActionPreference = 'Stop';
 $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
-$url        = 'https://github.com/HydrologicEngineeringCenter/hec-downloads/releases/download/1.0.28/HEC-RAS_641_Setup.exe'
+$url        = 'https://github.com/HydrologicEngineeringCenter/hec-downloads/releases/download/1.0.31/HEC-RAS_65_Setup.exe'
 
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
@@ -9,7 +9,7 @@ $packageArgs = @{
 
   softwareName  = 'hec-ras*'
 
-  checksum      = '66F351EEC47F7D0D669368DFDFEDF615278DCF372C556C511A0D1DB8A378E765'
+  checksum      = '1F4D2438AD6717ADA49C7D923EE91F57462D91CE74E68D901A3B914922F81BA3'
   checksumType  = 'sha256'
 
   silentArgs   = '/s /v"/qn"' 
