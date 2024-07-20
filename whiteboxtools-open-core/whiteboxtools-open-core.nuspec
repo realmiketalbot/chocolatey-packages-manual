@@ -2,18 +2,18 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
     <id>whiteboxtools-open-core</id>
-    <version>2.2.0</version>
+    <version>2.4.0</version>
     <packageSourceUrl>https://github.com/realmiketalbot/ChocolateyPackages/tree/main/whiteboxtools-open-core</packageSourceUrl>
     <owners>Mike Talbot</owners>
     
     <authors>Whitebox Geospatial Inc.</authors>
     <title>WhiteboxTools Open Core (WbTOC)</title>
     <projectUrl>https://www.whiteboxgeo.com/geospatial-software/</projectUrl>
-    <docsUrl>https://www.whiteboxgeo.com/manual/wbt_book/preface.html</docsUrl>
+    <docsUrl>https://www.whiteboxgeo.com/manual/wbt_book/intro.html</docsUrl>
     <bugTrackerUrl>https://github.com/jblindsay/whitebox-tools/issues</bugTrackerUrl>
     <iconUrl>https://cdn.jsdelivr.net/gh/realmiketalbot/ChocolateyPackages@latest/whiteboxtools-open-core/whiteboxtools-logo.png</iconUrl>
-    <releaseNotes>https://github.com/jblindsay/whitebox-tools/releases/tag/v2.2.0</releaseNotes>
-    <copyright>2022 Whitebox Geospatial Inc.</copyright>
+    <releaseNotes>https://github.com/jblindsay/whitebox-tools/releases/tag/v2.4.0</releaseNotes>
+    <copyright>2024 Whitebox Geospatial Inc.</copyright>
     <licenseUrl>https://www.whiteboxgeo.com/geospatial-software/</licenseUrl>
     <tags>whitebox tools open core dem gis vector raster geospatial</tags>
     <summary>
