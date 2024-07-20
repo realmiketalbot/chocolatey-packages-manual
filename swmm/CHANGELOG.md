@@ -34,3 +34,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Version 5.2.3 installer
+
+## [5.2.4] - 2024-07-20
+
+### Added
+
+- Version 5.2.4 installer
