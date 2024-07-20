@@ -28,3 +28,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Version 4.11 installer
+
+## [4.12] - 2024-07-20
+
+### Added
+
+- Version 4.12 installer
