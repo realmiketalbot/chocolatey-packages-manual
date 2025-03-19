@@ -46,3 +46,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Version 6.5 installer
+
+## [6.6] - 2025-03-19
+
+### Added
+
+- Version 6.6 installer
