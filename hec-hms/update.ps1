@@ -67,10 +67,23 @@ function Get-LatestHecHms {
   $version = $version.TrimStart('v')
 
   # Find a Windows installer asset. Try a few common patterns.
-  $asset =
-    ($release.assets | Where-Object { $_.name -match 'Setup\.exe$' -and $_.name -match 'Windows' } | Select-Object -First 1) ??
-    ($release.assets | Where-Object { $_.name -match 'Setup\.exe$' } | Select-Object -First 1) ??
-    ($release.assets | Where-Object { $_.name -match 'Windows.*\.zip$' } | Select-Object -First 1)
+  $asset = $null
+
+  $asset = $release.assets |
+    Where-Object { $_.name -match 'Setup\.exe$' -and $_.name -match 'Windows' } |
+    Select-Object -First 1
+
+  if (-not $asset) {
+    $asset = $release.assets |
+        Where-Object { $_.name -match 'Setup\.exe$' } |
+        Select-Object -First 1
+    }
+
+  if (-not $asset) {
+    $asset = $release.assets |
+        Where-Object { $_.name -match 'Windows.*\.zip$' } |
+        Select-Object -First 1
+    }
 
   if (-not $asset) {
     $names = ($release.assets | Select-Object -ExpandProperty name) -join ', '
