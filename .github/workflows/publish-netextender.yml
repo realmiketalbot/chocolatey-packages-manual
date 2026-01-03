@@ -7,6 +7,10 @@ on:
     paths:
       - "netextender/**"
 
+concurrency:
+  group: publish-netextender
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -35,6 +39,24 @@ jobs:
           if (-not $pkg) { throw "No new netextender*.nupkg produced by choco pack." }
 
           "NUPKG_PATH=$($pkg.FullName)" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+      - name: Guard: ensure version not already published
+        shell: pwsh
+        working-directory: netextender
+        run: |
+          [xml]$nuspec = Get-Content .\netextender.nuspec
+          $id      = $nuspec.package.metadata.id
+          $version = $nuspec.package.metadata.version
+
+          Write-Host "Checking Chocolatey for $id $version"
+          $info = choco info $id --version $version --source https://community.chocolatey.org/api/v2/ --limit-output
+
+          # If Chocolatey finds it, choco info returns output containing the id/version.
+          if ($LASTEXITCODE -eq 0 -and $info -match [regex]::Escape($id) -and $info -match [regex]::Escape($version)) {
+            throw "Refusing to publish: $id $version already exists on Chocolatey."
+          }
+
+          Write-Host "OK: $id $version not found on Chocolatey; proceeding."
 
       - name: Push
         shell: pwsh
