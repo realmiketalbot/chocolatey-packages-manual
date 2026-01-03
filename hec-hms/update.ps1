@@ -123,6 +123,7 @@ function global:au_SearchReplace {
   }
 }
 
+
 function global:au_AfterUpdate {
   if (-not $UpdateChangelog) { return }
   if (-not (Test-Path $ChangelogPath)) { return }
