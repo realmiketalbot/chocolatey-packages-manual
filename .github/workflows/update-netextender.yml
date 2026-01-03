@@ -1,18 +1,17 @@
-name: AU package update (NetExtender)
+name: NetExtender – AU update
 
 on:
   schedule:
-    # Daily at 03:17 UTC (pick any time you like)
     - cron: "0 0 * * 0"
   workflow_dispatch: {}
-
-concurrency:
-  group: au-netextender
-  cancel-in-progress: true
 
 permissions:
   contents: write
   pull-requests: write
+
+concurrency:
+  group: au-netextender
+  cancel-in-progress: true
 
 jobs:
   update:
@@ -28,19 +27,15 @@ jobs:
       - name: Install AU
         shell: pwsh
         run: |
-          choco --version
           choco install au -y --no-progress
           Import-Module au -ErrorAction Stop
-          Get-Command update | Format-List
 
       - name: Run updater
         shell: pwsh
         working-directory: netextender
         run: |
-          # Run without changing nuspec description from README
           .\update.ps1
 
-      # Create or update a PR if anything changed
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
@@ -52,6 +47,7 @@ jobs:
             - Updated installer URLs and SHA256 checksums in tools\chocolateyinstall.ps1
             - Bumped nuspec version
           branch: au/netextender
+          base: automatic-updates
           delete-branch: true
           labels: |
             automated
