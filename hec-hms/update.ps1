@@ -109,10 +109,10 @@ function global:au_GetLatest {
 function global:au_SearchReplace {
   @{
     $InstallScript = @{
-      "(?m)^\s*\$url\s*=\s*(''[^'']*''|""[^""]*"")\s*;?\s*$" =
-        "`$url        = '$($Latest.URL32)'"
+      "(?m)^\s*url\s*=\s*'[^']*'\s*$" =
+        "  url           = '$($Latest.URL32)'"
 
-      "(?m)^\s*checksum\s*=\s*(''[^'']*''|""[^""]*"")\s*;?\s*$" =
+      "(?m)^\s*checksum\s*=\s*'[^']*'\s*$" =
         "  checksum      = '$($Latest.Checksum32)'"
     }
 

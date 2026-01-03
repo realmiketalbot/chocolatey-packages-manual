@@ -1,11 +1,10 @@
 ﻿$ErrorActionPreference = 'Stop';
 $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
-$url        = 'https://github.com/HydrologicEngineeringCenter/hec-downloads/releases/download/1.0.32/HEC-HMS_412_Setup.exe'
 
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
   fileType      = 'exe'
-  url           = $url
+  url           = 'https://github.com/HydrologicEngineeringCenter/hec-downloads/releases/download/1.0.32/HEC-HMS_412_Setup.exe'
 
   softwareName  = 'hec-hms*'
 
