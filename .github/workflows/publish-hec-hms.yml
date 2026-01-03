@@ -1,0 +1,72 @@
+name: Package publish (HEC-HMS)
+
+on:
+  workflow_dispatch: {}
+
+concurrency:
+  group: publish-hec-hms
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: windows-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Pack
+        shell: pwsh
+        working-directory: hec-hms
+        run: |
+          $before = Get-Date
+          choco pack
+          Get-ChildItem -Filter "hec-hms*.nupkg" | Format-Table Name, LastWriteTime
+
+          $pkg = Get-ChildItem -Filter "hec-hms*.nupkg" |
+            Where-Object { $_.LastWriteTime -ge $before } |
+            Sort-Object LastWriteTime -Descending |
+            Select-Object -First 1
+
+          if (-not $pkg) { throw "No new hec-hms*.nupkg produced by choco pack." }
+
+          "NUPKG_PATH=$($pkg.FullName)" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+      - name: Guard: ensure version not already published
+        shell: pwsh
+        working-directory: hec-hms
+        run: |
+          [xml]$nuspec = Get-Content .\hec-hms.nuspec
+          $id      = $nuspec.package.metadata.id
+          $version = $nuspec.package.metadata.version
+
+          Write-Host "Checking Chocolatey for $id $version"
+          $info = choco info $id --version $version --source "https://community.chocolatey.org/api/v2/" --limit-output
+
+          if ($LASTEXITCODE -ne 0) {
+            throw "Could not query Chocolatey for $id $version (exit $LASTEXITCODE). Refusing to publish."
+          }
+
+          if ($info -match [regex]::Escape($id) -and $info -match [regex]::Escape($version)) {
+            throw "Refusing to publish: $id $version already exists on Chocolatey."
+          }
+
+          Write-Host "OK: $id $version not found on Chocolatey; proceeding."
+
+      - name: Push
+        shell: pwsh
+        working-directory: hec-hms
+        env:
+          CHOCO_API_KEY: ${{ secrets.CHOCO_API_KEY }}
+        run: |
+          if (-not $env:CHOCO_API_KEY) { throw "CHOCO_API_KEY secret is not set." }
+          if (-not $env:NUPKG_PATH) { throw "NUPKG_PATH was not set by Pack step." }
+
+          choco push $env:NUPKG_PATH `
+            --source "https://push.chocolatey.org/" `
+            --api-key $env:CHOCO_API_KEY `
+            --no-progress
