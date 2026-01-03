@@ -34,3 +34,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Version 4.12 installer
+
+## [4.13] - 2026-01-03
+
+### Added
+
+- Updated to HEC-HMS 4.13

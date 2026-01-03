@@ -4,11 +4,11 @@ $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
   fileType      = 'exe'
-  url           = 'https://github.com/HydrologicEngineeringCenter/hec-downloads/releases/download/1.0.32/HEC-HMS_412_Setup.exe'
+  url           = 'https://github.com/HydrologicEngineeringCenter/hec-downloads/releases/download/1.0.38/HEC-HMS_413_Setup.exe'
 
   softwareName  = 'hec-hms*'
 
-  checksum      = '9E01DBA368C37B12D11680E002A89215B964904E175DA56C16FF5159B52DCCA7'
+  checksum      = '309BB87EF05CCC8E57CF9557BFDA9E711510AFC6929CF6ECBE36EAD0A6F063B8'
   checksumType  = 'sha256'
 
   silentArgs   = '/s /v"/qn"' 
