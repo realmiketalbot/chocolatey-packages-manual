@@ -37,44 +37,34 @@ function Convert-RasTokenToVersion {
   return "$major.$minor"
 }
 
-function Get-LatestHecRasWindows {
-  $headers = @{
-    'User-Agent' = 'Chocolatey-AU'
-    'Accept'     = 'application/vnd.github+json'
+function Get-LatestHecRasWindowsFromHecSite {
+  $downloadPage = 'https://www.hec.usace.army.mil/software/hec-ras/download.aspx'
+  Write-Host "Fetching HEC-RAS download page: $downloadPage"
+
+  $r = Invoke-WebRequest -Uri $downloadPage -UseBasicParsing -TimeoutSec 60
+  $html = $r.Content
+
+  # 1) Extract a stable version like 6.6 / 6.4.1 etc.
+  $verMatch = [regex]::Match($html, '(?i)\bHEC-RAS\s+(\d+(?:\.\d+){1,2})\b')
+  if (-not $verMatch.Success) {
+    throw "Could not parse HEC-RAS version from $downloadPage"
+  }
+  $version = $verMatch.Groups[1].Value
+
+  # 2) Find an .exe setup link that looks like the installer
+  # The install docs describe the installer naming convention. :contentReference[oaicite:5]{index=5}
+  $exeMatch = [regex]::Match($html, '(?i)href\s*=\s*["'']([^"'']*HEC[-_]?RAS[^"'']*Setup\.exe)["'']')
+  if (-not $exeMatch.Success) {
+    throw "Could not find Windows Setup.exe link on $downloadPage"
   }
 
-  Write-Host "Querying GitHub releases: $ReleasesApi"
-  $releases = Invoke-RestMethod -Uri $ReleasesApi -Headers $headers -TimeoutSec 60
-  if (-not $releases) { throw "No releases returned from $ReleasesApi" }
+  $href = $exeMatch.Groups[1].Value
+  $url = if ($href -match '^https?://') { $href } else { (New-Object System.Uri((New-Object System.Uri($downloadPage)), $href)).AbsoluteUri }
 
-  foreach ($rel in $releases) {
-    if ($rel.draft -or $rel.prerelease) { continue }
-
-    $title = "$($rel.name) $($rel.tag_name)"
-    if ($title -match '(?i)\b(beta|alpha|preview)\b') { continue }
-
-    if (-not $rel.assets) { continue }
-
-    # Stable Windows installer asset
-    $asset = $rel.assets |
-      Where-Object { $_.name -match '^HEC_RAS_(\d+)_Setup\.exe$' } |
-      Select-Object -First 1
-
-    if ($asset) {
-      $m = [regex]::Match($asset.name, '^HEC_RAS_(\d+)_Setup\.exe$')
-      $token = $m.Groups[1].Value
-      $version = Convert-RasTokenToVersion -Token $token
-
-      return [pscustomobject]@{
-        Version = $version
-        Url     = $asset.browser_download_url
-        Asset   = $asset.name
-        Release = $rel.tag_name
-      }
-    }
+  return [pscustomobject]@{
+    Version = $version
+    Url     = $url
   }
-
-  throw "Could not find a stable HEC_RAS_(digits)_Setup.exe asset in recent releases."
 }
 
 function Get-Sha256FromUrl {
@@ -94,9 +84,9 @@ function Get-Sha256FromUrl {
 Import-Module au -ErrorAction Stop
 
 function global:au_GetLatest {
-  $latest = Get-LatestHecRasWindows
-  Write-Host "Selected asset: $($latest.Asset) (release: $($latest.Release))"
-  Write-Host "Parsed version:  $($latest.Version)"
+  $latest = Get-LatestHecRasWindowsFromHecSite
+  Write-Host "Parsed version: $($latest.Version)"
+  Write-Host "Installer URL:  $($latest.Url)"
 
   $sha256 = Get-Sha256FromUrl -Url $latest.Url
 
