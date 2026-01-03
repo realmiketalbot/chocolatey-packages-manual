@@ -1,11 +1,7 @@
-name: Publish HEC-HMS to Chocolatey
+name: Package publish (HEC-HMS)
 
 on:
   workflow_dispatch: {}
-  push:
-    branches: [ main ]
-    paths:
-      - "hec-hms/**"
 
 concurrency:
   group: publish-hec-hms

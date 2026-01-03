@@ -1,11 +1,7 @@
-name: Publish NetExtender to Chocolatey
+name: Package publish (NetExtender)
 
 on:
   workflow_dispatch: {}
-  push:
-    branches: [ main ]
-    paths:
-      - "netextender/**"
 
 concurrency:
   group: publish-netextender
