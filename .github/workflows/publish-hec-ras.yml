@@ -1,4 +1,4 @@
-name: Publish package (NetExtender)
+name: Publish package (HEC-RAS)
 
 on:
   workflow_dispatch: {}
@@ -6,10 +6,10 @@ on:
     types: [closed]
     branches: [main]
     paths:
-      - "netextender/**"
+      - "hec-ras/**"
 
 concurrency:
-  group: publish-netextender
+  group: publish-hec-ras
   cancel-in-progress: true
 
 permissions:
@@ -20,7 +20,7 @@ jobs:
     if: >
       github.event_name == 'workflow_dispatch' ||
       (github.event.pull_request.merged == true &&
-       github.event.pull_request.head.ref == 'au/netextender')
+       github.event.pull_request.head.ref == 'au/hec-ras')
 
     runs-on: windows-latest
     timeout-minutes: 30
@@ -31,42 +31,45 @@ jobs:
 
       - name: Pack
         shell: pwsh
-        working-directory: netextender
+        working-directory: hec-ras
         run: |
           $before = Get-Date
           choco pack
-          Get-ChildItem -Filter "netextender*.nupkg" | Format-Table Name, LastWriteTime
+          Get-ChildItem -Filter "hec-ras*.nupkg" | Format-Table Name, LastWriteTime
 
-          $pkg = Get-ChildItem -Filter "netextender*.nupkg" |
+          $pkg = Get-ChildItem -Filter "hec-ras*.nupkg" |
             Where-Object { $_.LastWriteTime -ge $before } |
             Sort-Object LastWriteTime -Descending |
             Select-Object -First 1
 
-          if (-not $pkg) { throw "No new netextender*.nupkg produced by choco pack." }
+          if (-not $pkg) { throw "No new hec-ras*.nupkg produced by choco pack." }
 
           "NUPKG_PATH=$($pkg.FullName)" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
 
       - name: Guard
         shell: pwsh
-        working-directory: netextender
+        working-directory: hec-ras
         run: |
-          [xml]$nuspec = Get-Content .\netextender.nuspec
+          [xml]$nuspec = Get-Content .\hec-ras.nuspec
           $id      = $nuspec.package.metadata.id
           $version = $nuspec.package.metadata.version
 
           Write-Host "Checking Chocolatey for $id $version"
-          $info = choco info $id --version $version --source https://community.chocolatey.org/api/v2/ --limit-output
+          $info = choco info $id --version $version --source "https://community.chocolatey.org/api/v2/" --limit-output
 
-          # If Chocolatey finds it, choco info returns output containing the id/version.
-          if ($LASTEXITCODE -eq 0 -and $info -match [regex]::Escape($id) -and $info -match [regex]::Escape($version)) {
-            throw "Refusing to publish: $id $version already exists on Chocolatey."
+          if ($LASTEXITCODE -ne 0) {
+            throw "Could not query Chocolatey for $id $version (exit $LASTEXITCODE). Refusing to publish."
+          }
+
+          if ($info -match [regex]::Escape($id) -and $info -match [regex]::Escape($version)) {
+            throw "Refusing to publish $id $version because it already exists on Chocolatey."
           }
 
           Write-Host "OK: $id $version not found on Chocolatey; proceeding."
 
       - name: Push
         shell: pwsh
-        working-directory: netextender
+        working-directory: hec-ras
         env:
           CHOCO_API_KEY: ${{ secrets.CHOCO_API_KEY }}
         run: |

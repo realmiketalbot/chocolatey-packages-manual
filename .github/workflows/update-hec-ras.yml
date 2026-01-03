@@ -1,12 +1,12 @@
-name: AU package update (HEC-HMS)
+name: AU package update (HEC-RAS)
 
 on:
   schedule:
-    - cron: "2 1 * * 0"
+    - cron: "11 3 * * 0"
   workflow_dispatch: {}
 
 concurrency:
-  group: au-hec-hms
+  group: au-hec-ras
   cancel-in-progress: true
 
 permissions:
@@ -32,22 +32,23 @@ jobs:
 
       - name: Run updater
         shell: pwsh
-        working-directory: hec-hms
+        working-directory: hec-ras
         run: |
           .\update.ps1 -UpdateChangelog
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          commit-message: "hec-hms: update to latest upstream release"
-          title: "hec-hms: update to latest upstream release"
+          commit-message: "hec-ras update to latest upstream release"
+          title: "hec-ras update to latest upstream release"
           body: |
             Automated update via Chocolatey-AU.
 
             - Updated installer URL and SHA256 in tools\chocolateyinstall.ps1
             - Bumped nuspec version
             - Updated changelog
-          branch: au/hec-hms
+          branch: au/hec-ras
+          base: automatic-updates
           delete-branch: true
           labels: |
             automated

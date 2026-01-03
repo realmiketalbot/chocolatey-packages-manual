@@ -2,6 +2,11 @@ name: Publish package (HEC-HMS)
 
 on:
   workflow_dispatch: {}
+  pull_request:
+    types: [closed]
+    branches: [main]
+    paths:
+      - "hec-hms/**"
 
 concurrency:
   group: publish-hec-hms
@@ -12,6 +17,11 @@ permissions:
 
 jobs:
   publish:
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.pull_request.merged == true &&
+       github.event.pull_request.head.ref == 'au/hec-hms')
+
     runs-on: windows-latest
     timeout-minutes: 30
 

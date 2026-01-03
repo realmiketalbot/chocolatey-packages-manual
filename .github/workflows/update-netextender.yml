@@ -2,7 +2,7 @@ name: AU package update (NetExtender)
 
 on:
   schedule:
-    - cron: "0 0 * * 0"
+    - cron: "50 4 * * 0"
   workflow_dispatch: {}
 
 concurrency:
