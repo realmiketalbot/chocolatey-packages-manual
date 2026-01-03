@@ -161,7 +161,6 @@ function global:au_AfterUpdate {
 ### Added
 
 - Version $($Latest.Version) installer
-
 "@
   Add-Content -Path $ChangelogPath -Value $entry
 }
