@@ -48,7 +48,6 @@ jobs:
             - Bumped nuspec version
             - Updated changelog
           branch: au/hec-ras
-          base: automatic-updates
           delete-branch: true
           labels: |
             automated
