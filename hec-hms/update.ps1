@@ -13,28 +13,68 @@ $InstallScript = Join-Path $PackageRoot 'tools\chocolateyinstall.ps1'
 $NuspecPath    = Join-Path $PackageRoot "$PackageName.nuspec"
 $ChangelogPath = Join-Path $PackageRoot 'CHANGELOG.md'
 
-# Official upstream source
-$ReleasesApi = 'https://api.github.com/repos/HydrologicEngineeringCenter/hec-hms/releases/latest'
+$DownloadsPage = 'https://www.hec.usace.army.mil/software/hec-hms/downloads.aspx'
 
-function Get-LatestHecHms {
-  Write-Host "Querying GitHub releases API"
-  $headers = @{ 'User-Agent' = 'Chocolatey-AU' }
+function Get-HecHmsRepoFromUsacePage {
+  Write-Host "Discovering GitHub repo from: $DownloadsPage"
+  $html = (Invoke-WebRequest -Uri $DownloadsPage -UseBasicParsing).Content
 
-  $release = Invoke-RestMethod -Uri $ReleasesApi -Headers $headers
+  # Find any GitHub repo links in the page (owner/repo)
+  $matches = [regex]::Matches($html, 'https://github\.com/([^/\s"]+)/([^/\s"#?]+)', 'IgnoreCase') |
+    ForEach-Object {
+      [pscustomobject]@{ Owner = $_.Groups[1].Value; Repo = $_.Groups[2].Value }
+    }
 
-  if (-not $release.tag_name) {
-    throw "Could not determine HEC-HMS version from GitHub releases."
+  if (-not $matches -or $matches.Count -eq 0) {
+    throw "Could not find any github.com/<owner>/<repo> links on the USACE downloads page."
   }
 
-  $version = $release.tag_name.TrimStart('v')
+  # Prefer a repo name that looks like hec-hms
+  $best = $matches | Where-Object { $_.Repo -match 'hec[-_]?hms' } | Select-Object -First 1
+  if (-not $best) { $best = $matches | Select-Object -First 1 }
 
-  # Prefer Windows installer EXE
-  $asset = $release.assets |
-    Where-Object { $_.name -match 'Windows.*Setup\.exe' } |
+  Write-Host "Using GitHub repo: $($best.Owner)/$($best.Repo)"
+  return $best
+}
+
+function Get-LatestHecHms {
+  $headers = @{
+    'User-Agent' = 'Chocolatey-AU'
+    'Accept'     = 'application/vnd.github+json'
+  }
+
+  $repo = Get-HecHmsRepoFromUsacePage
+  $releasesUri = "https://api.github.com/repos/$($repo.Owner)/$($repo.Repo)/releases"
+
+  Write-Host "Querying GitHub releases: $releasesUri"
+  $releases = Invoke-RestMethod -Uri $releasesUri -Headers $headers -TimeoutSec 60
+
+  if (-not $releases) {
+    throw "No releases returned from $releasesUri"
+  }
+
+  # Pick newest non-draft, non-prerelease release (works even if /latest 404s)
+  $release = $releases |
+    Where-Object { -not $_.draft -and -not $_.prerelease } |
     Select-Object -First 1
 
+  if (-not $release) {
+    throw "No non-draft, non-prerelease releases found in $releasesUri"
+  }
+
+  $version = $release.tag_name
+  if (-not $version) { throw "Release has no tag_name." }
+  $version = $version.TrimStart('v')
+
+  # Find a Windows installer asset. Try a few common patterns.
+  $asset =
+    ($release.assets | Where-Object { $_.name -match 'Setup\.exe$' -and $_.name -match 'Windows' } | Select-Object -First 1) ??
+    ($release.assets | Where-Object { $_.name -match 'Setup\.exe$' } | Select-Object -First 1) ??
+    ($release.assets | Where-Object { $_.name -match 'Windows.*\.zip$' } | Select-Object -First 1)
+
   if (-not $asset) {
-    throw "Could not find Windows installer asset in GitHub release."
+    $names = ($release.assets | Select-Object -ExpandProperty name) -join ', '
+    throw "Could not find a suitable Windows asset in release $($release.tag_name). Assets: $names"
   }
 
   [pscustomobject]@{
