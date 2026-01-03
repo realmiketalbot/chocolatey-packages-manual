@@ -1,138 +1,134 @@
-<# 
-  update.ps1 - Chocolatey AU updater for NetExtender community package
+<#
+.SYNOPSIS
+  AU updater for the Chocolatey Community package "netextender".
 
-  Expected folder structure:
-    netextender\
-      netextender.nuspec
-      CHANGELOG.md
-      tools\
-        chocolateyinstall.ps1
-        chocolateyuninstall.ps1
+.DESCRIPTION
+  - Scrapes SonicWall NetExtender Windows release notes landing page for latest version.
+  - Builds the MSI URLs in the standard software.sonicwall.com pattern.
+  - Downloads both x86 and x64 MSIs (without AU URL checking), computes SHA256.
+  - Updates tools\chocolateyinstall.ps1 and netextender.nuspec accordingly.
+  - Optionally appends an entry to CHANGELOG.md.
+
+.REQUIREMENTS
+  - PowerShell 5.1+ (works on PS7 as well)
+  - chocolatey-au module available (Import-Module au)
 #>
+
+[CmdletBinding()]
+param(
+  [switch]$UpdateChangelog
+)
 
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
 
-$packageRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
-Set-Location $packageRoot
+$PackageName  = 'netextender'
+$PackageRoot  = Split-Path -Parent $MyInvocation.MyCommand.Path
 
-# --- Ensure AU is available ---------------------------------------------------
-try {
-  Import-Module au -ErrorAction Stop
-} catch {
-  throw "Chocolatey-AU module not found. Install it first (e.g., `choco install chocolatey-au -y`) and re-run."
-}
+$InstallScript = Join-Path $PackageRoot 'tools\chocolateyinstall.ps1'
+$NuspecPath    = Join-Path $PackageRoot "$PackageName.nuspec"
+$ChangelogPath = Join-Path $PackageRoot 'CHANGELOG.md'
 
-# --- Helpers -----------------------------------------------------------------
-function Get-NetExtenderLatestVersion {
-  <#
-    Strategy:
-      1) Fetch SonicWall NetExtender Windows release notes "Versions" index.
-      2) Extract versions from links like .../v-10.3.1/...
-      3) Select max by semantic version.
+# SonicWall "NetExtender Windows Release Notes" landing page lists current versions
+$ReleaseNotesIndexUri = 'https://www.sonicwall.com/support/technical-documentation/docs/netextender-windows_release_notes/Content/release_notes.htm'
 
-    This avoids scraping the product marketing page and is typically more stable.
-  #>
+function Get-LatestNetExtenderWindowsVersion {
+  Write-Host "Fetching version list from: $ReleaseNotesIndexUri"
+  $html = (Invoke-WebRequest -Uri $ReleaseNotesIndexUri -UseBasicParsing).Content
 
-  $versionsIndex = 'https://www.sonicwall.com/support/technical-documentation/docs/netextender-windows_release_notes/Content/Versions/'
-  $html = (Invoke-WebRequest -Uri $versionsIndex -UseBasicParsing).Content
+  # Example matches: "Version 10.3.3", "Version 10.3.2", etc.
+  $raw = [regex]::Matches($html, 'Version\s+(\d+\.\d+\.\d+)', 'IgnoreCase') |
+         ForEach-Object { $_.Groups[1].Value }
 
-  # capture v-10.3.1 patterns
-  $matches = [regex]::Matches($html, 'v-(\d+\.\d+\.\d+)')
-  if ($matches.Count -eq 0) {
-    throw "Could not find any versions on the release notes index: $versionsIndex"
+  if (-not $raw -or $raw.Count -eq 0) {
+    throw "Could not find any 'Version X.Y.Z' tokens at $ReleaseNotesIndexUri"
   }
 
-  $versions =
-    $matches |
-    ForEach-Object { $_.Groups[1].Value } |
-    Sort-Object -Unique |
-    ForEach-Object { [version]$_ }
-
-  ($versions | Sort-Object -Descending | Select-Object -First 1).ToString()
+  $latest = ($raw | Sort-Object -Unique | ForEach-Object { [version]$_ } | Sort-Object -Descending | Select-Object -First 1).ToString()
+  Write-Host "Latest version detected: $latest"
+  return $latest
 }
 
 function Get-Sha256FromUrl {
   param(
-    [Parameter(Mandatory)] [string] $Url,
-    [Parameter(Mandatory)] [string] $OutFile
+    [Parameter(Mandatory=$true)][string]$Url
   )
 
-  # Download exactly the URL we provide (no transforms).
-  Invoke-WebRequest -Uri $Url -OutFile $OutFile -UseBasicParsing
-
-  if (-not (Test-Path $OutFile)) {
-    throw "Download failed; file not found: $OutFile"
+  $tmp = Join-Path $env:TEMP ("{0}.msi" -f ([guid]::NewGuid().ToString()))
+  try {
+    Write-Host "Downloading for checksum: $Url"
+    Invoke-WebRequest -Uri $Url -OutFile $tmp -UseBasicParsing
+    return (Get-FileHash -Path $tmp -Algorithm SHA256).Hash
   }
-
-  (Get-FileHash -Path $OutFile -Algorithm SHA256).Hash.ToUpperInvariant()
-}
-
-function Update-ChangelogTopEntry {
-  param(
-    [Parameter(Mandatory)] [string] $ChangelogPath,
-    [Parameter(Mandatory)] [string] $Version
-  )
-
-  if (-not (Test-Path $ChangelogPath)) { return }
-
-  $content = Get-Content -Path $ChangelogPath -Raw
-  if ($content -match [regex]::Escape("* $Version")) { return }
-
-  $today = (Get-Date).ToString('yyyy-MM-dd')
-  $newLine = "* $Version ($today)"
-
-  # Insert after the first line (the "# Changelog" header) if present,
-  # otherwise just prepend.
-  if ($content -match '^\s*#\s*Changelog\s*$') {
-    $lines = Get-Content -Path $ChangelogPath
-    $out = New-Object System.Collections.Generic.List[string]
-    $out.Add($lines[0])
-    $out.Add("")
-    $out.Add($newLine)
-    for ($i = 1; $i -lt $lines.Count; $i++) { $out.Add($lines[$i]) }
-    $out -join "`r`n" | Set-Content -Path $ChangelogPath -Encoding UTF8
-  } else {
-    ($newLine + "`r`n" + $content) | Set-Content -Path $ChangelogPath -Encoding UTF8
+  finally {
+    Remove-Item -Path $tmp -Force -ErrorAction SilentlyContinue
   }
 }
 
-# --- AU entry points ----------------------------------------------------------
+Import-Module au -ErrorAction Stop
+
 function global:au_GetLatest {
-  $version = Get-NetExtenderLatestVersion
+  $version = Get-LatestNetExtenderWindowsVersion
 
-  # Canonical MSI URLs you already use
   $url32 = "https://software.sonicwall.com/NetExtender/NetExtender-x86-$version.msi"
   $url64 = "https://software.sonicwall.com/NetExtender/NetExtender-x64-$version.msi"
 
-  # Optional: quick HEAD validation to fail early if SonicWall changes paths
-  foreach ($u in @($url32, $url64)) {
-    try {
-      Invoke-WebRequest -Uri $u -Method Head -UseBasicParsing | Out-Null
-    } catch {
-      throw "Upstream URL not reachable (HEAD failed). URL: $u"
-    }
-  }
+  # Compute checksums ourselves (keeps URLs exactly as-is; avoids AU URL check rewriting)
+  $checksum32 = Get-Sha256FromUrl -Url $url32
+  $checksum64 = Get-Sha256FromUrl -Url $url64
 
-  @{
-    Version = $version
-    URL32   = $url32
-    URL64   = $url64
+  return @{
+    Version    = $version
+    URL32      = $url32
+    URL64      = $url64
+    Checksum32 = $checksum32
+    Checksum64 = $checksum64
   }
 }
 
-function global:au_BeforeUpdate {
+function global:au_SearchReplace {
+  @{
+    $InstallScript = @{
+      '(?m)^\$url\s*=\s*''[^'']*'''        = "`$url        = '$($Latest.URL32)'"
+      '(?m)^\$url64bit\s*=\s*''[^'']*'''   = "`$url64bit      = '$($Latest.URL64)'"
+      "(?m)^\s*checksum\s*=\s*'[^']*'"     = "  checksum      = '$($Latest.Checksum32)'"
+      "(?m)^\s*checksum64\s*=\s*'[^']*'"   = "  checksum64    = '$($Latest.Checksum64)'"
+    }
+
+    $NuspecPath = @{
+      '(?m)^\s*<version>[^<]+</version>\s*$' = "    <version>$($Latest.Version)</version>"
+    }
+  }
+}
+
+function global:au_AfterUpdate {
   param($Package)
 
-  # Download and hash locally to avoid any URL "helpfulness" from AU
-  $tmp = Join-Path $env:TEMP ("netextender-au-" + $Package.Version)
-  if (Test-Path $tmp) { Remove-Item -Recurse -Force $tmp }
-  New-Item -ItemType Directory -Path $tmp | Out-Null
+  if (-not $UpdateChangelog) { return }
+  if (-not (Test-Path $ChangelogPath)) { return }
 
-  $file32 = Join-Path $tmp ("NetExtender-x86-" + $Package.Version + ".msi")
-  $file64 = Join-Path $tmp ("NetExtender-x64-" + $Package.Version + ".msi")
+  $content = Get-Content -Path $ChangelogPath -Raw
 
-  Write-Host "Downloading for checksum (x86): $($Package.URL32)"
-  $checksum32 = Get-Sha256FromUrl -Url $Package.URL32 -OutFile $file32
+  # Only append if this exact version header isn't already present
+  if ($content -match [regex]::Escape("## [$($Latest.Version)]")) { return }
 
-  Write-Host "Downloading for checksum (x64): $($Package.URL64)"
+  $date = Get-Date -Format 'yyyy-MM-dd'
+
+  $entry = @"
+
+## [$($Latest.Version)] - $date
+
+### Added
+
+- Version $($Latest.Version) installer
+"@
+
+  Add-Content -Path $ChangelogPath -Value $entry
+}
+
+# Critical: disable AU URL checking (prevents AU from rewriting/augmenting the URL during validation)
+# AU supports -NoCheckUrl; we also set the global for safety in older patterns.
+$global:au_NoCheckUrl = $true
+
+# We compute checksums ourselves, so tell AU not to do it.
+update -NoCheckUrl -ChecksumFor none
