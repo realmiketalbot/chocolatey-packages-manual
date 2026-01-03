@@ -1,4 +1,4 @@
-name: Package publish (NetExtender)
+name: Publish package (NetExtender)
 
 on:
   workflow_dispatch: {}

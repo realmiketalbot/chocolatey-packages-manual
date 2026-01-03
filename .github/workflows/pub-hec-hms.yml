@@ -1,4 +1,4 @@
-name: Package publish (HEC-HMS)
+name: Publish package (HEC-HMS)
 
 on:
   workflow_dispatch: {}
