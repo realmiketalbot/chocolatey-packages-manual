@@ -37,29 +37,39 @@ function Convert-RasTokenToVersion {
   return "$major.$minor"
 }
 
-function Get-LatestHecRasWindowsFromHecSite {
+function Get-LatestHecRasStableWindowsFromHecSite {
   $downloadPage = 'https://www.hec.usace.army.mil/software/hec-ras/download.aspx'
   Write-Host "Fetching HEC-RAS download page: $downloadPage"
 
   $r = Invoke-WebRequest -Uri $downloadPage -UseBasicParsing -TimeoutSec 60
   $html = $r.Content
 
-  # 1) Extract a stable version like 6.6 / 6.4.1 etc.
-  $verMatch = [regex]::Match($html, '(?i)\bHEC-RAS\s+(\d+(?:\.\d+){1,2})\b')
-  if (-not $verMatch.Success) {
-    throw "Could not parse HEC-RAS version from $downloadPage"
-  }
-  $version = $verMatch.Groups[1].Value
+  # Locate the stable section: "HEC-RAS 6.6 Windows:"
+  # (This section is explicitly present on the page.) :contentReference[oaicite:2]{index=2}
+  $section = [regex]::Match(
+    $html,
+    '(?is)HEC-RAS\s+(?<ver>\d+(?:\.\d+){1,2})\s+Windows:\s*(?<body>.*?)(?:HEC-RAS\s+\d|\z)'
+  )
 
-  # 2) Find an .exe setup link that looks like the installer
-  # The install docs describe the installer naming convention. :contentReference[oaicite:5]{index=5}
-  $exeMatch = [regex]::Match($html, '(?i)href\s*=\s*["'']([^"'']*HEC[-_]?RAS[^"'']*Setup\.exe)["'']')
-  if (-not $exeMatch.Success) {
-    throw "Could not find Windows Setup.exe link on $downloadPage"
+  if (-not $section.Success) {
+    throw "Could not locate a 'HEC-RAS <version> Windows' section on the download page."
   }
 
-  $href = $exeMatch.Groups[1].Value
-  $url = if ($href -match '^https?://') { $href } else { (New-Object System.Uri((New-Object System.Uri($downloadPage)), $href)).AbsoluteUri }
+  $version = $section.Groups['ver'].Value
+  $body    = $section.Groups['body'].Value
+
+  # Find the first Setup.exe link in that *stable* section body
+  $exe = [regex]::Match($body, '(?is)href\s*=\s*["''](?<url>[^"'']*Setup\.exe)["'']')
+  if (-not $exe.Success) {
+    throw "Could not find a Windows Setup.exe link in the HEC-RAS $version Windows section."
+  }
+
+  $href = $exe.Groups['url'].Value
+  $url = if ($href -match '^https?://') {
+    $href
+  } else {
+    (New-Object System.Uri((New-Object System.Uri($downloadPage)), $href)).AbsoluteUri
+  }
 
   return [pscustomobject]@{
     Version = $version
@@ -84,7 +94,7 @@ function Get-Sha256FromUrl {
 Import-Module au -ErrorAction Stop
 
 function global:au_GetLatest {
-  $latest = Get-LatestHecRasWindowsFromHecSite
+  $latest = Get-LatestHecRasStableWindowsFromHecSite
   Write-Host "Parsed version: $($latest.Version)"
   Write-Host "Installer URL:  $($latest.Url)"
 
