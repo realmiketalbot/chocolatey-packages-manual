@@ -169,4 +169,4 @@ function global:au_AfterUpdate {
 $global:au_NoCheckUrl = $true
 
 # We compute checksums ourselves.
-update -NoCheckUrl -ChecksumFor none
+update -NoCheckUrl -ChecksumFor none -NoReadme
