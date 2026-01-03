@@ -1,19 +1,3 @@
-<#
-.SYNOPSIS
-  AU updater for the Chocolatey Community package "netextender".
-
-.DESCRIPTION
-  - Scrapes SonicWall NetExtender Windows release notes landing page for latest version.
-  - Builds the MSI URLs in the standard software.sonicwall.com pattern.
-  - Downloads both x86 and x64 MSIs (without AU URL checking), computes SHA256.
-  - Updates tools\chocolateyinstall.ps1 and netextender.nuspec accordingly.
-  - Optionally appends an entry to CHANGELOG.md.
-
-.REQUIREMENTS
-  - PowerShell 5.1+ (works on PS7 as well)
-  - chocolatey-au module available (Import-Module au)
-#>
-
 [CmdletBinding()]
 param(
   [switch]$UpdateChangelog
@@ -29,30 +13,86 @@ $InstallScript = Join-Path $PackageRoot 'tools\chocolateyinstall.ps1'
 $NuspecPath    = Join-Path $PackageRoot "$PackageName.nuspec"
 $ChangelogPath = Join-Path $PackageRoot 'CHANGELOG.md'
 
-# SonicWall "NetExtender Windows Release Notes" landing page lists current versions
-$ReleaseNotesIndexUri = 'https://www.sonicwall.com/support/technical-documentation/docs/netextender-windows_release_notes/Content/release_notes.htm'
+function Get-NetExtenderMeta {
+  <#
+    Uses SonicWall Free Downloads API (per community gist) to locate the latest version
+    for Windows x86/x64. We still compute SHA256 ourselves for Chocolatey.
+  #>
 
-function Get-LatestNetExtenderWindowsVersion {
-  Write-Host "Fetching version list from: $ReleaseNotesIndexUri"
-  $html = (Invoke-WebRequest -Uri $ReleaseNotesIndexUri -UseBasicParsing).Content
+  [CmdletBinding()]
+  param(
+    [ValidateSet('Windows-x64','Windows-x86')]
+    [string]$Platform = 'Windows-x64'
+  )
 
-  # Example matches: "Version 10.3.3", "Version 10.3.2", etc.
-  $raw = [regex]::Matches($html, 'Version\s+(\d+\.\d+\.\d+)', 'IgnoreCase') |
-         ForEach-Object { $_.Groups[1].Value }
-
-  if (-not $raw -or $raw.Count -eq 0) {
-    throw "Could not find any 'Version X.Y.Z' tokens at $ReleaseNotesIndexUri"
+  # Ensure TLS 1.2+ (older hosts)
+  if (-not ([System.Net.ServicePointManager]::SecurityProtocol -band [System.Net.SecurityProtocolType]::Tls12)) {
+    [System.Net.ServicePointManager]::SecurityProtocol =
+      [System.Net.ServicePointManager]::SecurityProtocol -bor [System.Net.SecurityProtocolType]::Tls12
   }
 
-  $latest = ($raw | Sort-Object -Unique | ForEach-Object { [version]$_ } | Sort-Object -Descending | Select-Object -First 1).ToString()
-  Write-Host "Latest version detected: $latest"
-  return $latest
+  $uri = 'https://api.mysonicwall.com/api/downloads/get-freedownloads'
+
+  # This payload is taken from / consistent with the gist (productType 17491 = NetExtender)
+  $body = @{
+    category         = 'LATEST'
+    productType      = '17491'          # NetExtender
+    swLangCode       = 'EN'
+    fileType         = @('Firmware')
+    releaseTypeList  = @(@{ releaseType = 'ALL' })
+    keyWord          = ''
+    previousVersions = $false
+    isFileTypeChange = $false
+    username         = 'ANONYMOUS'
+  } | ConvertTo-Json
+
+  $headers = @{
+    'Accept'     = 'application/json'
+    'User-Agent' = 'Chocolatey AU updater (netextender)'
+  }
+
+  $resp = Invoke-RestMethod -Method Post -Uri $uri -ContentType 'application/json' -Headers $headers -Body $body -TimeoutSec 60
+
+  # Gather all "applicableDownloads" and locate the NetExtender block (same approach as gist)
+  $blocks = @()
+  if ($resp.content -and $resp.content.UserDownloads) {
+    foreach ($ud in $resp.content.UserDownloads) {
+      if ($ud.applicableDownloads) { $blocks += $ud.applicableDownloads }
+    }
+  }
+
+  $nx = $blocks | Where-Object { $_.Name -eq 'NetExtender' } | Select-Object -First 1
+  if (-not $nx -or -not $nx.softwareList) {
+    throw "NetExtender not found in API response."
+  }
+
+  $label = if ($Platform -eq 'Windows-x64') { 'Windows 64 bit' } else { 'Windows 32 bit' }
+
+  $candidates = $nx.softwareList | Where-Object { $_.name -like "*$label*" }
+  if (-not $candidates) {
+    throw "No packages found for platform '$Platform'."
+  }
+
+  # Latest by Version descending (same idea as gist)
+  $pkg = $candidates | Sort-Object -Property @{Expression='Version';Descending=$true} | Select-Object -First 1
+  if (-not $pkg -or -not $pkg.Version) {
+    throw "Could not determine latest version for $Platform."
+  }
+
+  $fileName = if ($Platform -eq 'Windows-x64') { "NetExtender-x64-$($pkg.Version).msi" } else { "NetExtender-x86-$($pkg.Version).msi" }
+  $url      = "https://software.sonicwall.com/NetExtender/$fileName"
+
+  # API provides MD5 (pkg.md5HashValue), but Chocolatey package uses SHA256 today.
+  return [pscustomobject]@{
+    Platform = $Platform
+    Version  = $pkg.Version
+    Url      = $url
+    Md5      = $pkg.md5HashValue
+  }
 }
 
 function Get-Sha256FromUrl {
-  param(
-    [Parameter(Mandatory=$true)][string]$Url
-  )
+  param([Parameter(Mandatory=$true)][string]$Url)
 
   $tmp = Join-Path $env:TEMP ("{0}.msi" -f ([guid]::NewGuid().ToString()))
   try {
@@ -68,19 +108,22 @@ function Get-Sha256FromUrl {
 Import-Module au -ErrorAction Stop
 
 function global:au_GetLatest {
-  $version = Get-LatestNetExtenderWindowsVersion
+  $x64 = Get-NetExtenderMeta -Platform 'Windows-x64'
+  $x86 = Get-NetExtenderMeta -Platform 'Windows-x86'
 
-  $url32 = "https://software.sonicwall.com/NetExtender/NetExtender-x86-$version.msi"
-  $url64 = "https://software.sonicwall.com/NetExtender/NetExtender-x64-$version.msi"
+  # Sanity: versions should match; if not, prefer x64 but warn loudly.
+  $version = $x64.Version
+  if ($x86.Version -ne $x64.Version) {
+    Write-Warning "x86 version ($($x86.Version)) != x64 version ($($x64.Version)); using x64 as package version."
+  }
 
-  # Compute checksums ourselves (keeps URLs exactly as-is; avoids AU URL check rewriting)
-  $checksum32 = Get-Sha256FromUrl -Url $url32
-  $checksum64 = Get-Sha256FromUrl -Url $url64
+  $checksum32 = Get-Sha256FromUrl -Url $x86.Url
+  $checksum64 = Get-Sha256FromUrl -Url $x64.Url
 
   return @{
     Version    = $version
-    URL32      = $url32
-    URL64      = $url64
+    URL32      = $x86.Url
+    URL64      = $x64.Url
     Checksum32 = $checksum32
     Checksum64 = $checksum64
   }
@@ -108,12 +151,9 @@ function global:au_AfterUpdate {
   if (-not (Test-Path $ChangelogPath)) { return }
 
   $content = Get-Content -Path $ChangelogPath -Raw
-
-  # Only append if this exact version header isn't already present
   if ($content -match [regex]::Escape("## [$($Latest.Version)]")) { return }
 
   $date = Get-Date -Format 'yyyy-MM-dd'
-
   $entry = @"
 
 ## [$($Latest.Version)] - $date
@@ -122,13 +162,11 @@ function global:au_AfterUpdate {
 
 - Version $($Latest.Version) installer
 "@
-
   Add-Content -Path $ChangelogPath -Value $entry
 }
 
-# Critical: disable AU URL checking (prevents AU from rewriting/augmenting the URL during validation)
-# AU supports -NoCheckUrl; we also set the global for safety in older patterns.
+# Critical: prevent AU URL check logic from “helpfully” altering the SonicWall URL
 $global:au_NoCheckUrl = $true
 
-# We compute checksums ourselves, so tell AU not to do it.
+# We compute checksums ourselves.
 update -NoCheckUrl -ChecksumFor none
