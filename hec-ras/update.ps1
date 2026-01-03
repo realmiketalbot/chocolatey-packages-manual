@@ -37,34 +37,39 @@ function Convert-RasTokenToVersion {
   return "$major.$minor"
 }
 
-function Get-LatestHecRasStableWindowsFromHecSite {
+function Get-HecRas66WindowsInstallerFromHecSite {
   $downloadPage = 'https://www.hec.usace.army.mil/software/hec-ras/download.aspx'
   Write-Host "Fetching HEC-RAS download page: $downloadPage"
 
   $r = Invoke-WebRequest -Uri $downloadPage -UseBasicParsing -TimeoutSec 60
   $html = $r.Content
 
-  # Locate the stable section: "HEC-RAS 6.6 Windows:"
-  # (This section is explicitly present on the page.) :contentReference[oaicite:2]{index=2}
-  $section = [regex]::Match(
+  # Grab only the "HEC-RAS 6.6 Windows:" section up to the next major heading
+  # (This avoids Beta, Archives, etc.)
+  $sec = [regex]::Match(
     $html,
-    '(?is)HEC-RAS\s+(?<ver>\d+(?:\.\d+){1,2})\s+Windows:\s*(?<body>.*?)(?:HEC-RAS\s+\d|\z)'
+    '(?is)HEC-RAS\s+6\.6\s+Windows:\s*(?<body>.*?)(?:HEC-RAS\s+6\.6\s+Example\s+Projects:|HEC-RAS\s+Archived\s+Versions\s+Windows:|HEC-RAS\s+6\.6\s+Linux:|\z)'
   )
-
-  if (-not $section.Success) {
-    throw "Could not locate a 'HEC-RAS <version> Windows' section on the download page."
+  if (-not $sec.Success) {
+    throw "Could not locate the HEC-RAS 6.6 Windows section."
   }
 
-  $version = $section.Groups['ver'].Value
-  $body    = $section.Groups['body'].Value
+  $body = $sec.Groups['body'].Value
 
-  # Find the first Setup.exe link in that *stable* section body
-  $exe = [regex]::Match($body, '(?is)href\s*=\s*["''](?<url>[^"'']*Setup\.exe)["'']')
-  if (-not $exe.Success) {
-    throw "Could not find a Windows Setup.exe link in the HEC-RAS $version Windows section."
+  # Find a Setup.exe link inside that section. Allow .EXE and optional query string.
+  $m = [regex]::Match(
+    $body,
+    '(?is)href\s*=\s*["''](?<url>[^"'']*Setup\.exe(?:\?[^"'']*)?)["'']'
+  )
+  if (-not $m.Success) {
+    # Helpful debug if it still fails
+    $snippet = $body.Substring(0, [Math]::Min(1200, $body.Length))
+    Write-Host "DEBUG section snippet (first 1200 chars):"
+    Write-Host $snippet
+    throw "Could not find a Windows Setup.exe link in the HEC-RAS 6.6 Windows section."
   }
 
-  $href = $exe.Groups['url'].Value
+  $href = $m.Groups['url'].Value
   $url = if ($href -match '^https?://') {
     $href
   } else {
@@ -72,7 +77,7 @@ function Get-LatestHecRasStableWindowsFromHecSite {
   }
 
   return [pscustomobject]@{
-    Version = $version
+    Version = '6.6'
     Url     = $url
   }
 }
@@ -94,9 +99,9 @@ function Get-Sha256FromUrl {
 Import-Module au -ErrorAction Stop
 
 function global:au_GetLatest {
-  $latest = Get-LatestHecRasStableWindowsFromHecSite
-  Write-Host "Parsed version: $($latest.Version)"
-  Write-Host "Installer URL:  $($latest.Url)"
+  $latest = Get-HecRas66WindowsInstallerFromHecSite
+  Write-Host "Parsed version:  $($latest.Version)"
+  Write-Host "Installer URL:   $($latest.Url)"
 
   $sha256 = Get-Sha256FromUrl -Url $latest.Url
 
