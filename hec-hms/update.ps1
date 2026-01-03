@@ -13,87 +13,68 @@ $InstallScript = Join-Path $PackageRoot 'tools\chocolateyinstall.ps1'
 $NuspecPath    = Join-Path $PackageRoot "$PackageName.nuspec"
 $ChangelogPath = Join-Path $PackageRoot 'CHANGELOG.md'
 
-$DownloadsPage = 'https://www.hec.usace.army.mil/software/hec-hms/downloads.aspx'
+$ReleasesApi = 'https://api.github.com/repos/HydrologicEngineeringCenter/hec-downloads/releases'
 
-function Get-HecHmsRepoFromUsacePage {
-  Write-Host "Discovering GitHub repo from: $DownloadsPage"
-  $html = (Invoke-WebRequest -Uri $DownloadsPage -UseBasicParsing).Content
+function Convert-HecHmsTokenToVersion {
+  param([Parameter(Mandatory)][string]$Token)
 
-  # Find any GitHub repo links in the page (owner/repo)
-  $matches = [regex]::Matches($html, 'https://github\.com/([^/\s"]+)/([^/\s"#?]+)', 'IgnoreCase') |
-    ForEach-Object {
-      [pscustomobject]@{ Owner = $_.Groups[1].Value; Repo = $_.Groups[2].Value }
-    }
-
-  if (-not $matches -or $matches.Count -eq 0) {
-    throw "Could not find any github.com/<owner>/<repo> links on the USACE downloads page."
+  # Token examples:
+  # 412  -> 4.12
+  # 413  -> 4.13
+  # 4100 -> 4.10.0 (rare, but handle)
+  # 500  -> 5.0.0 (future-proof)
+  if ($Token.Length -eq 3) {
+    return "{0}.{1}" -f $Token.Substring(0,1), $Token.Substring(1,2)
+  }
+  elseif ($Token.Length -eq 4) {
+    return "{0}.{1}.{2}" -f $Token.Substring(0,1), $Token.Substring(1,2), $Token.Substring(3,1)
+  }
+  elseif ($Token.Length -ge 5) {
+    # Fallback: 1 digit major, 2 digit minor, rest patch
+    $major = $Token.Substring(0,1)
+    $minor = $Token.Substring(1,2)
+    $patch = $Token.Substring(3)
+    return "$major.$minor.$patch"
   }
 
-  # Prefer a repo name that looks like hec-hms
-  $best = $matches | Where-Object { $_.Repo -match 'hec[-_]?hms' } | Select-Object -First 1
-  if (-not $best) { $best = $matches | Select-Object -First 1 }
-
-  Write-Host "Using GitHub repo: $($best.Owner)/$($best.Repo)"
-  return $best
+  throw "Unrecognized HEC-HMS version token: $Token"
 }
 
-function Get-LatestHecHms {
+function Get-LatestHecHmsFromHecDownloads {
   $headers = @{
     'User-Agent' = 'Chocolatey-AU'
     'Accept'     = 'application/vnd.github+json'
   }
 
-  $repo = Get-HecHmsRepoFromUsacePage
-  $releasesUri = "https://api.github.com/repos/$($repo.Owner)/$($repo.Repo)/releases"
+  Write-Host "Querying GitHub releases: $ReleasesApi"
+  $releases = Invoke-RestMethod -Uri $ReleasesApi -Headers $headers -TimeoutSec 60
 
-  Write-Host "Querying GitHub releases: $releasesUri"
-  $releases = Invoke-RestMethod -Uri $releasesUri -Headers $headers -TimeoutSec 60
+  if (-not $releases) { throw "No releases returned from $ReleasesApi" }
 
-  if (-not $releases) {
-    throw "No releases returned from $releasesUri"
-  }
+  foreach ($rel in $releases) {
+    if ($rel.draft -or $rel.prerelease) { continue }
+    if (-not $rel.assets) { continue }
 
-  # Pick newest non-draft, non-prerelease release (works even if /latest 404s)
-  $release = $releases |
-    Where-Object { -not $_.draft -and -not $_.prerelease } |
-    Select-Object -First 1
+    # Find the first HEC-HMS Setup asset in this release
+    $asset = $rel.assets |
+      Where-Object { $_.name -match '^HEC-HMS_(\d+)_Setup\.exe$' } |
+      Select-Object -First 1
 
-  if (-not $release) {
-    throw "No non-draft, non-prerelease releases found in $releasesUri"
-  }
+    if ($asset) {
+      $m = [regex]::Match($asset.name, '^HEC-HMS_(\d+)_Setup\.exe$')
+      $token = $m.Groups[1].Value
+      $version = Convert-HecHmsTokenToVersion -Token $token
 
-  $version = $release.tag_name
-  if (-not $version) { throw "Release has no tag_name." }
-  $version = $version.TrimStart('v')
-
-  # Find a Windows installer asset. Try a few common patterns.
-  $asset = $null
-
-  $asset = $release.assets |
-    Where-Object { $_.name -match 'Setup\.exe$' -and $_.name -match 'Windows' } |
-    Select-Object -First 1
-
-  if (-not $asset) {
-    $asset = $release.assets |
-        Where-Object { $_.name -match 'Setup\.exe$' } |
-        Select-Object -First 1
+      return [pscustomobject]@{
+        Version = $version
+        Url     = $asset.browser_download_url
+        Asset   = $asset.name
+        Release = $rel.tag_name
+      }
     }
-
-  if (-not $asset) {
-    $asset = $release.assets |
-        Where-Object { $_.name -match 'Windows.*\.zip$' } |
-        Select-Object -First 1
-    }
-
-  if (-not $asset) {
-    $names = ($release.assets | Select-Object -ExpandProperty name) -join ', '
-    throw "Could not find a suitable Windows asset in release $($release.tag_name). Assets: $names"
   }
 
-  [pscustomobject]@{
-    Version = $version
-    Url     = $asset.browser_download_url
-  }
+  throw "Could not find any asset matching HEC-HMS_(digits)_Setup.exe in recent releases."
 }
 
 function Get-Sha256FromUrl {
@@ -102,7 +83,7 @@ function Get-Sha256FromUrl {
   $tmp = Join-Path $env:TEMP ("{0}.exe" -f ([guid]::NewGuid()))
   try {
     Write-Host "Downloading for checksum: $Url"
-    Invoke-WebRequest -Uri $Url -OutFile $tmp
+    Invoke-WebRequest -Uri $Url -OutFile $tmp -UseBasicParsing
     (Get-FileHash -Path $tmp -Algorithm SHA256).Hash
   }
   finally {
@@ -113,10 +94,12 @@ function Get-Sha256FromUrl {
 Import-Module au -ErrorAction Stop
 
 function global:au_GetLatest {
-  $latest = Get-LatestHecHms
+  $latest = Get-LatestHecHmsFromHecDownloads
+  Write-Host "Selected asset: $($latest.Asset) (release: $($latest.Release))"
+  Write-Host "Parsed version:  $($latest.Version)"
   $sha256 = Get-Sha256FromUrl -Url $latest.Url
 
-  @{
+  return @{
     Version    = $latest.Version
     URL32      = $latest.Url
     Checksum32 = $sha256
@@ -126,12 +109,15 @@ function global:au_GetLatest {
 function global:au_SearchReplace {
   @{
     $InstallScript = @{
-      "(?m)^\s*url\s*=\s*'[^']*'"      = "  url           = '$($Latest.URL32)'"
-      "(?m)^\s*checksum\s*=\s*'[^']*'" = "  checksum      = '$($Latest.Checksum32)'"
+      # Update: $url = '...'
+      "(?m)^\s*\$url\s*=\s*'[^']*'\s*$" = "`$url        = '$($Latest.URL32)'"
+
+      # Update checksum in hashtable: checksum = '...'
+      "(?m)^\s*checksum\s*=\s*'[^']*'\s*$" = "  checksum      = '$($Latest.Checksum32)'"
     }
 
     $NuspecPath = @{
-      '(?m)<version>[^<]+</version>' = "<version>$($Latest.Version)</version>"
+      '(?m)^\s*<version>[^<]+</version>\s*$' = "    <version>$($Latest.Version)</version>"
     }
   }
 }
@@ -140,13 +126,16 @@ function global:au_AfterUpdate {
   if (-not $UpdateChangelog) { return }
   if (-not (Test-Path $ChangelogPath)) { return }
 
-  $content = Get-Content $ChangelogPath -Raw
-  if ($content -match "\[$($Latest.Version)\]") { return }
+  $content = Get-Content -Path $ChangelogPath -Raw
+  if ($content -match [regex]::Escape("## [$($Latest.Version)]")) { return }
 
   $date = Get-Date -Format 'yyyy-MM-dd'
-  Add-Content $ChangelogPath @"
+  Add-Content -Path $ChangelogPath -Value @"
 
 ## [$($Latest.Version)] - $date
+
+### Added
+
 - Updated to HEC-HMS $($Latest.Version)
 "@
 }
