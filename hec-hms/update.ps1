@@ -109,15 +109,16 @@ function global:au_GetLatest {
 function global:au_SearchReplace {
   @{
     $InstallScript = @{
-      # Update: $url = '...'
-      "(?m)^\s*\$url\s*=\s*'[^']*'\s*$" = "`$url        = '$($Latest.URL32)'"
+      "(?m)^\s*\$url\s*=\s*'[^']*'\s*$" =
+        "`$url        = '$($Latest.URL32)'"
 
-      # Update checksum in hashtable: checksum = '...'
-      "(?m)^\s*checksum\s*=\s*'[^']*'\s*$" = "  checksum      = '$($Latest.Checksum32)'"
+      "(?m)^\s*checksum\s*=\s*'[^']*'\s*$" =
+        "  checksum      = '$($Latest.Checksum32)'"
     }
 
     $NuspecPath = @{
-      '(?m)^\s*<version>[^<]+</version>\s*$' = "    <version>$($Latest.Version)</version>"
+      '(?m)^\s*<version>[^<]+</version>\s*$' =
+        "    <version>$($Latest.Version)</version>"
     }
   }
 }
